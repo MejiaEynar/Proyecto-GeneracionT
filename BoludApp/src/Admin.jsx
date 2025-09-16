@@ -18,7 +18,7 @@ function Admin (props) {
 
     return (
         <>
-            <h1 className='admin-h1'>¿Te atreves a ser ADMIN?</h1>
+            <h1 className='admin-h1'>¿Te atreves a ser ADMIN? w</h1>
             <div className='form-Admin'>
                 <form onSubmit={handleSubmit}>
                     <input onChange={e => setContraseña(e.target.value)}type="password" value={contraseña}/>
