@@ -42,7 +42,7 @@ function Inicio(props) {
       <header className='SearchBar'>
         <nav>
           <ul>
-            <li><Link className='Inicio' to='/'>asd</Link></li>
+            <li><Link className='Inicio' to='/'>asdd</Link></li>
               {admin && <p className='admin'>ADMIN</p>}
             <li><Link className='New' to='/new'>New</Link></li>
           </ul>
