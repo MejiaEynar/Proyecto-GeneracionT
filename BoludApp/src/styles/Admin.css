@@ -1,0 +1,12 @@
+.admin-h1 {
+    padding: 15px 10vw 15px 10vw;
+    margin: 0;
+    background-color: red;
+    text-align: center;
+}
+
+.form-Admin {
+    margin-top: 50px;
+    display: flex;
+    justify-content: center;
+}
