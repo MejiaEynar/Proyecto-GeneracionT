@@ -77,10 +77,6 @@ function New() {
               value="Publicar"
               disabled={!usuario || !contenido || caracteresRestantes < 0}
             />
-            <input 
-              type="submit" 
-              value="Publicar" 
-            />
       </form>
       <div className='markdown-style'>
         <Markdown remarkPlugins={[remarkGfm]}>{contenido}</Markdown>
