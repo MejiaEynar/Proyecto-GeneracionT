@@ -68,11 +68,6 @@ function Inicio(props) {
           <h4 className='h4-h4'>No hay Publicaciones</h4>
         )}
       </main>
-      <footer>
-        <div>
-          <p> Sitio construido por Eduardo Orsi, Tiziano Maine y Eynar Mejia de 4° 4° COMPUTACIÓN.</p>
-        </div>
-      </footer>
     </>
   );
 }
