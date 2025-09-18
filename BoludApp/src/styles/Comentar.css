@@ -11,10 +11,27 @@
   }
 
 .comentarios {
-    background-color: orangered;
-    border: 4px solid black;
     margin-bottom: 10px;
     font-size: 30px;
+}
+
+.dark .comentarios {
+    background-color: #333;
+    color: #e0e0e0;
+    border-color: #555;
+}
+
+.dark .comentarios > p {
+    color: #e0e0e0;
+}
+
+.light .comentarios {
+    background-color: grey;
+    color: black;
+    border-color: black;
+}
+.light .comentarios > p {
+    color: black;
 }
 
 .comentarios > p {
