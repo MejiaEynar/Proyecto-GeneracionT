@@ -1,80 +1,112 @@
 .Nav-comentar {
-    position: fixed; /* Hace que el elemento no siga el flujo normal del documento */
-    bottom: 0;           /* Lo ancla al borde izquierdo */
-    width: 100%;
-  }
+    position: fixed;
+    bottom: 0;
+    z-index: 1000;
+}
 
 .Nav-comentar > ul {
     display: flex;
-    padding: 20px;
+    padding: 15px;
     margin: 0;
-    font-size: 40px;
-    background-color: black;
-  }
+    justify-content: space-around;
+    align-items: center;
+    border-bottom: 1px solid;
+}
 
 .comentarios {
     margin-bottom: 10px;
-    font-size: 30px;
-}
-
-.dark .comentarios {
-    background-color: #333;
-    color: #e0e0e0;
-    border-color: #555;
-}
-
-.dark .comentarios > p {
-    color: #e0e0e0;
-}
-
-.light .comentarios {
-    background-color: grey;
-    color: black;
-    border-color: black;
-}
-.light .comentarios > p {
-    color: black;
+    font-size: 16px;
+    padding: 15px;
+    border-radius: 12px;
+    border: 1px solid;
 }
 
 .comentarios > p {
     margin-left: 10px;
+    margin-top: 0;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+.comentarios p {
+    font-weight: normal;
 }
 
 .Comen-title {
-    font-size: 20px;
-    margin-left: 20px;
-}
-
-.dark .Comen-title {
-    color: white;
-}
-
-.light .Comen-title {
-    color: black;
+    font-size: 16px;
+    margin: 15px 0;
+    font-weight: bold;
 }
 
 .form-comentarios {
     display: flex;
     flex-direction: column;
-    text-align: center;
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 12px;
 }
 
-.form-comentarios > input{
-    width: 80px;
-    height: 30px;
-    margin: 10px;
-    margin-left: 25px;
-}
-
-.form-comentarios > input[type=text]{
-    width: 350px;
-    height: 30px;
-    margin: 10px;
-}
-
+.form-comentarios > input[type=text],
 .form-comentarios > textarea {
-    margin: 10px;
-    resize: none;
-    width: 390px;
-    height: 290px;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 10px 0;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid;
+    background-color: transparent;
+    font-size: 16px;
+}
+
+.form-comentarios > input[type=button] {
+    align-self: flex-end;
+    width: auto;
+    padding: 8px 16px;
+    border-radius: 50px;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    background-color: #1d9bf0;
+    color: #ffffff;
+}
+
+/* Estilos para el modo claro (basado en Twitter) */
+.light .Nav-comentar > ul {
+    background-color: #ffffff;
+    border-color: #e7e9ea;
+}
+.light .comentarios {
+    background-color: #ffffff;
+    border-color: #e7e9ea;
+}
+.light .comentarios > p {
+    color: #0f1419;
+}
+.light .Comen-title {
+    color: #0f1419;
+}
+.light .form-comentarios > input,
+.light .form-comentarios > textarea {
+    border-color: #cfd9de;
+    color: #0f1419;
+}
+
+/* Estilos para el modo oscuro (basado en Twitter "Dim") */
+.dark .Nav-comentar > ul {
+    background-color: #16202b;
+    border-color: #333639;
+}
+.dark .comentarios {
+    background-color: #1d2733;
+    border-color: #333639;
+}
+.dark .comentarios > p {
+    color: #e7e9ea;
+}
+.dark .Comen-title {
+    color: #e7e9ea;
+}
+.dark .form-comentarios > input,
+.dark .form-comentarios > textarea {
+    border-color: #333639;
+    color: #e7e9ea;
 }

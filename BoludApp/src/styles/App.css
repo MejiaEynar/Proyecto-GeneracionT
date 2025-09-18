@@ -1,123 +1,113 @@
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
 .SearchBar {
-  position: fixed; /* Hace que el elemento no siga el flujo normal del documento */
-  bottom: 0;           /* Lo ancla al borde izquierdo */
+  position: fixed; /* Hace que la barra se quede en la parte superior al hacer scroll */
+  bottom: 0;
+  z-index: 1000;
   width: 100%;
 }
 .SearchBar > nav > ul {
   display: flex;
-  padding: 20px;
+  padding: 15px;
   margin: 0;
-  justify-content: space-evenly;
+  justify-content: space-around;
+  align-items: center;
 }
 
-.Inicio {
-  font-size: 40px;
+.Inicio, .New {
+  font-size: 20px;
+  font-weight: bold;
   text-decoration: none;
   justify-content: space-evenly;
-}
-
-.New {
-  font-size: 40px;
-  text-decoration: none;
 }
 
 .SearchBar a:hover {
   text-decoration: underline;
-  color: rgb(0, 12, 182);
-}
-.publicacion {
-  padding: 10px;
-  padding-left: 50px;
-  margin-bottom: 10px;
-  border: 4px solid black;
-  font-size: 30px;
 }
 
+.publicacion {
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: 12px;
+  border: 1px solid;
+  font-size: 16px;
+}
 .publicacion a {
   text-decoration: none;
 }
-
 .publicacion button {
-  border: 2px solid black;
-  margin: 10px;
-}
-
-body {
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-/* Estilos del modo oscuro */
-.dark {
-  background-color: #121212; /* Fondo oscuro */
-  color: #e0e0e0; /* Texto claro */
-}
-
-.dark .SearchBar > nav > ul {
-  background-color: #1f1f1f;
-}
-
-.dark .Inicio, .dark .New {
-  color: white;
-}
-
-.dark .publicacion {
-  background-color: #333;
-  color: #e0e0e0;
-  border-color: #555;
-}
-
-.dark .publicacion a {
-  color: #e0e0e0;
-}
-
-.dark footer > div {
-  background-color: #1f1f1f;
-  border-color: #555;
-}
-
-/* Estilos del modo claro */
-.light {
-  background-color: #ffffff; /* Fondo original */
-  color: #ffffff; /* Texto claro por defecto */
-}
-.light .SearchBar > nav > ul {
-  background-color: black;
-}
-
-.light .h4-h4{
-  color: #1a1a1a;
-}
-
-.light .publicacion {
-  background-color: grey;
-  color: black;
-  border-color: black;
-}
-.light .publicacion a {
-  color: black;
-}
-
-.light .Inicio, .light .New {
-  color: white;
-}
-
-footer > div{
-  margin-top: auto;
-  border: 4px solid black;
-  background-color: gray;
-  text-align: center;
-}
-
-.remove {
-  margin-left: 10px;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  background-color: transparent;
+  border: 1px solid;
+  cursor: pointer;
+  font-weight: bold;
 }
 
 .admin {
   color: red;
-  margin-top: 0;
-  font-size: 38px;
+  font-size: 14px;
+  font-weight: bold;
 }
 
-.h4-h4{
-  font-size: 25px;
+/* Estilos del modo claro (basado en Twitter) */
+.light {
+  background-color: #ffffff;
+  color: #0f1419;
+}
+.light .SearchBar > nav > ul {
+  background-color: #ffffff;
+  border-bottom: 1px solid #e7e9ea;
+}
+.light .Inicio, .light .New {
+  color: #0f1419;
+}
+.light .publicacion {
+  background-color: #ffffff;
+  border-color: #e7e9ea;
+}
+.light .publicacion a {
+  color: #0f1419;
+}
+.light .publicacion button.remove {
+  color: #0f1419;
+  border-color: #e7e9ea;
+}
+.light .h4-h4 {
+  color: #0f1419;
+}
+
+/* Estilos del modo oscuro (basado en Twitter "Dim") */
+.dark {
+  background-color: #16202b;
+  color: #e7e9ea;
+}
+.dark .SearchBar > nav > ul {
+  background-color: #16202b;
+  border-bottom: 1px solid #333639;
+}
+.dark .Inicio, .dark .New {
+  color: #e7e9ea;
+}
+.dark .publicacion {
+  background-color: #1d2733;
+  border-color: #333639;
+}
+.dark .publicacion a {
+  color: #e7e9ea;
+}
+.dark .publicacion button.remove {
+  color: #e7e9ea;
+  border-color: #333639;
+}
+
+/* El color de los enlaces de "hover" se mantienen para ambos modos */
+.SearchBar a:hover {
+  text-decoration: underline;
+  color: #1d9bf0;
 }
