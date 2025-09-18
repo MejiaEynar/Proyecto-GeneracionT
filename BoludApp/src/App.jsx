@@ -8,6 +8,7 @@ import './styles/App.css';
 import New from './New';
 
 function Inicio(props) {
+  const { admin, toggleTheme, theme } = props;
   const [publicaciones, setPublicaciones] = useState([]);
 
   useEffect(() => {
@@ -15,73 +16,75 @@ function Inicio(props) {
     setPublicaciones(publicacionesGuardadas);
   }, []);
 
-  const handleAgregarPublicacion = (nuevoPost) => {
-    setPublicaciones([...publicaciones, nuevoPost]);
-    localStorage.setItem('publicaciones', JSON.stringify([...publicaciones, nuevoPost]));
-  };
+  useEffect(() => {
+    document.body.className = theme;
+  }, [theme]);
 
   const borrarPublicacion = (id) => {
     const publicacionesActualizadas = publicaciones.filter((publicacion) => publicacion.id !== id);
     setPublicaciones(publicacionesActualizadas);
     localStorage.setItem('publicaciones', JSON.stringify(publicacionesActualizadas));
   };
-  
-  const handleLike = (id) => {
-  
-    const publicacionesActualizadas = publicaciones.map((publicacion) =>
-    publicacion.id === id ? { ...publicacion, likes: (publicacion.likes || 0) + 1 } : publicacion
-  );
-    setPublicaciones(publicacionesActualizadas);
-    localStorage.setItem('publicaciones', JSON.stringify(publicacionesActualizadas));
-  
-  };
-  const { admin } = props;
 
   return (
-    <>
-      <header className='SearchBar'>
-        <nav>
-          <ul>
-            <li><Link className='Inicio' to='/'>asdd</Link></li>
+      <>
+        <header className='SearchBar'>
+          <nav>
+            <ul>
+              <li><Link className='Inicio' to='/'>asdd</Link></li>
               {admin && <p className='admin'>ADMIN</p>}
-            <li><Link className='New' to='/new'>New</Link></li>
-          </ul>
-        </nav>
-      </header>
-
-      <main>
-        {publicaciones && publicaciones.length > 0 ? (
-          publicaciones.map((publicacion) => (
-            <div key={publicacion.id} className='publicacion'>
-              <h1>
-                <Link to={`/post/${publicacion.id}`}>
-                  {publicacion.titulo}
-                </Link>
-                {admin && (
-                    <button className='remove' id={publicacion.id} onClick={() => borrarPublicacion(publicacion.id)}>X</button>)}
-              </h1>
-              <h4>{publicacion.usuario}</h4>
-            <Markdown remarkPlugins={[remarkGfm]}>{publicacion.contenido}</Markdown>
-            </div>
-          ))
-        ) : (
-          <h4 className='h4-h4'>No hay Publicaciones</h4>
-        )}
-      </main>
-    </>
+              <li><Link className='New' to='/new'>New</Link></li>
+              <li>
+                <button onClick={toggleTheme}>
+                  {theme === 'light' ? 'Modo Oscuro' : 'Modo Claro'}
+                </button>
+              </li>
+            </ul>
+          </nav>
+        </header>
+        <main>
+          {publicaciones && publicaciones.length > 0 ? (
+              publicaciones.map((publicacion) => (
+                  <div key={publicacion.id} className='publicacion'>
+                    <h1>
+                      <Link to={`/post/${publicacion.id}`}>
+                        {publicacion.titulo}
+                      </Link>
+                      {admin && (
+                          <button className='remove' id={publicacion.id} onClick={() => borrarPublicacion(publicacion.id)}>X</button>)}
+                    </h1>
+                    <h4>{publicacion.usuario}</h4>
+                    <Markdown remarkPlugins={[remarkGfm]}>{publicacion.contenido}</Markdown>
+                  </div>
+              ))
+          ) : (
+              <h4 className='h4-h4'>No hay Publicaciones</h4>
+          )}
+        </main>
+      </>
   );
 }
 
 function App() {
   const [admin, setAdmin] = useState(false);
+  const [theme, setTheme] = useState(
+      localStorage.getItem('theme') || 'light'
+  );
+  useEffect(() => {
+    localStorage.setItem('theme', theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme(prevTheme => (prevTheme === 'light' ? 'dark' : 'light'));
+  };
 
   return (
-    <Routes>
-      <Route path='/' element={<Inicio admin={admin} />} />
-      <Route path='/post/:id' element={<Comentar />} />
-      <Route path='/new' element={<New />} />
-      <Route path='/admin' element={<Admin setAdmin={setAdmin} />} />
-    </Routes>
+      <Routes>
+        <Route path='/' element={<Inicio admin={admin} toggleTheme={toggleTheme} theme={theme} />} />
+        <Route path='/post/:id' element={<Comentar theme={theme} />} />
+        <Route path='/new' element={<New theme={theme} />} />
+        <Route path='/admin' element={<Admin setAdmin={setAdmin} theme={theme} />} />
+      </Routes>
   );
 }
 

@@ -5,19 +5,16 @@
   display: flex;
   padding: 20px;
   margin: 0;
-  background-color: black;
   justify-content: space-evenly;
 }
 
 .Inicio {
-  color: white;
   font-size: 40px;
   text-decoration: none;
   justify-content: space-evenly;
 }
 
 .New {
-  color: white;
   font-size: 40px;
   text-decoration: none;
 }
@@ -30,14 +27,12 @@
   padding: 10px;
   padding-left: 50px;
   margin-bottom: 10px;
-  background-color: grey;
   border: 4px solid black;
   font-size: 30px;
 }
 
 .publicacion a {
   text-decoration: none;
-  color: black;
 }
 
 .publicacion button {
@@ -46,7 +41,57 @@
 }
 
 body {
-  background-color: rgb(95, 0, 95);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Estilos del modo oscuro */
+.dark {
+  background-color: #121212; /* Fondo oscuro */
+  color: #e0e0e0; /* Texto claro */
+}
+
+.dark .SearchBar > nav > ul {
+  background-color: #1f1f1f;
+}
+.dark .Inicio, .dark .New {
+  color: white;
+}
+
+.dark .publicacion {
+  background-color: #333;
+  color: #e0e0e0;
+  border-color: #555;
+}
+
+.dark .publicacion a {
+  color: #e0e0e0;
+}
+
+.dark footer > div {
+  background-color: #1f1f1f;
+  border-color: #555;
+}
+
+/* Estilos del modo claro */
+.light {
+  background-color: #ffffff; /* Fondo original */
+  color: #ffffff; /* Texto claro por defecto */
+}
+.light .SearchBar > nav > ul {
+  background-color: black;
+}
+
+.light .publicacion {
+  background-color: grey;
+  color: black;
+  border-color: black;
+}
+.light .publicacion a {
+  color: black;
+}
+
+.light .Inicio, .light .New {
+  color: white;
 }
 
 footer > div{
