@@ -53,6 +53,7 @@ body {
 .dark .SearchBar > nav > ul {
   background-color: #1f1f1f;
 }
+
 .dark .Inicio, .dark .New {
   color: white;
 }
@@ -79,6 +80,10 @@ body {
 }
 .light .SearchBar > nav > ul {
   background-color: black;
+}
+
+.light .h4-h4{
+  color: #1a1a1a;
 }
 
 .light .publicacion {
