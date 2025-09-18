@@ -24,7 +24,14 @@
 .Comen-title {
     font-size: 20px;
     margin-left: 20px;
-    color: gold;
+}
+
+.dark .Comen-title {
+    color: white;
+}
+
+.light .Comen-title {
+    color: black;
 }
 
 .form-comentarios {
