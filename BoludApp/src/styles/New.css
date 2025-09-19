@@ -4,6 +4,10 @@
     z-index: 1000;
 }
 
+.inicio {
+    text-decoration: none;
+}
+
 .nav-New > nav > ul {
     text-decoration: none;
     display: flex;
