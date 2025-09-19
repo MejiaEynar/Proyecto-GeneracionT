@@ -1,7 +1,8 @@
 .Nav-comentar {
-    position: fixed;
+    position: fixed; /* Hace que la barra se quede en la parte superior al hacer scroll */
     bottom: 0;
     z-index: 1000;
+    width: 100%;
 }
 
 .Nav-comentar > ul {
@@ -11,6 +12,9 @@
     justify-content: space-around;
     align-items: center;
     border-bottom: 1px solid;
+    font-size: 20px;
+    font-weight: bold;
+
 }
 
 .comentarios {
@@ -70,11 +74,29 @@
     color: #ffffff;
 }
 
-/* Estilos para el modo claro (basado en Twitter) */
-.light .Nav-comentar > ul {
+.light .Nav-comentar > nav > ul {
     background-color: #ffffff;
-    border-color: #e7e9ea;
+    border-bottom: 1px solid #e7e9ea;
 }
+.light .Nav-comentar .inicio {
+    color: #0f1419;
+}
+
+.dark .nav-New > nav > ul {
+    background-color: #16202b;
+    border-color: #333639;
+}
+.dark .inicio {
+    color: #e7e9ea;
+}
+
+/* Estilos para el modo claro (basado en Twitter) */
+.dark .Nav-comentar > ul {
+    background-color: #16202b;
+    border-bottom: 1px solid #333639;
+}
+
+
 .light .comentarios {
     background-color: #ffffff;
     border-color: #e7e9ea;
@@ -88,7 +110,7 @@
 .light .form-comentarios > input,
 .light .form-comentarios > textarea {
     border-color: #cfd9de;
-    color: #0f1419;
+    color: white;
 }
 
 /* Estilos para el modo oscuro (basado en Twitter "Dim") */
