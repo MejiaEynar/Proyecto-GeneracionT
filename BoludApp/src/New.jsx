@@ -78,9 +78,6 @@ function New() {
               disabled={!usuario || !contenido || caracteresRestantes < 0}
             />
       </form>
-      <div className='markdown-style'>
-        <Markdown remarkPlugins={[remarkGfm]}>{contenido}</Markdown>
-      </div>
       </div>
     </>
   );
