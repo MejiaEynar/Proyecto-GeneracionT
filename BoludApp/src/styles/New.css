@@ -9,6 +9,7 @@
 }
 
 .nav-New > nav > ul {
+    list-style-type: none;
     text-decoration: none;
     display: flex;
     padding: 15px;

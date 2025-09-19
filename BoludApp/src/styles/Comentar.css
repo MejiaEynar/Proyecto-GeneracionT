@@ -6,6 +6,8 @@
 }
 
 .Nav-comentar > ul {
+    text-align: center;
+    list-style: none;|
     display: flex;
     padding: 15px;
     margin: 0;
@@ -110,7 +112,6 @@
 .light .form-comentarios > input,
 .light .form-comentarios > textarea {
     border-color: #cfd9de;
-    color: white;
 }
 
 /* Estilos para el modo oscuro (basado en Twitter "Dim") */

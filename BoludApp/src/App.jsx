@@ -6,6 +6,9 @@ import Comentar from './Comentar';
 import Admin from './Admin';
 import './styles/App.css';
 import Logo from './assets/LdNR.png';
+import luz from './assets/luz.png';
+import oscuridad from './assets/oscuridad.png';
+
 import New from './New';
 
 function Inicio(props) {
@@ -38,8 +41,8 @@ function Inicio(props) {
               {admin && <p className='admin'>ADMIN</p>}
               <li><Link className='New' to='/new'>New</Link></li>
               <li>
-                <button onClick={toggleTheme}>
-                  {theme === 'light' ? 'Modo Oscuro' : 'Modo Claro'}
+                <button className={"boton"} onClick={toggleTheme}>
+                    {theme === 'light' ?  <img src={oscuridad} className={"Logo"} alt={"modo oscuro"} /> : <img src={luz} className={"Logo"} alt={"modo claro"} /> }
                 </button>
               </li>
             </ul>

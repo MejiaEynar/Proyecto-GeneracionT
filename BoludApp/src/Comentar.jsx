@@ -84,7 +84,8 @@ function Comentar() {
             <input 
               type="button" 
               onClick={handleComentar} 
-              value="Comentar" 
+              value="Comentar"
+              className={"botonComentar"}
             />
           </div>
           

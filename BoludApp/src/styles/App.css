@@ -17,6 +17,7 @@ body {
   margin: 0;
   justify-content: space-around;
   align-items: center;
+  list-style: none
 }
 
 .Inicio, .New {
@@ -40,14 +41,14 @@ body {
 .publicacion a {
   text-decoration: none;
 }
-.publicacion button {
-  border-radius: 50%;
-  width: 24px;
-  height: 24px;
-  background-color: transparent;
-  border: 1px solid;
-  cursor: pointer;
-  font-weight: bold;
+
+.boton {
+    width: 24px;
+    height: 24px;
+    background-color: transparent; /* Hace el fondo del botón transparente */
+    border: none; /* Elimina cualquier borde que el botón pueda tener */
+    cursor: pointer; /* Cambia el cursor para indicar que es clickeable */
+    font-weight: bold;
 }
 
 .Imagen {
