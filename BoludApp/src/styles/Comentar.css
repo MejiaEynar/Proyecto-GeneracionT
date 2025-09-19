@@ -47,6 +47,7 @@
 
 .form-comentarios > input[type=text],
 .form-comentarios > textarea {
+    resize: none;
     width: 100%;
     box-sizing: border-box;
     margin: 10px 0;
