@@ -5,6 +5,7 @@ import remarkGfm from 'remark-gfm';
 import Comentar from './Comentar';
 import Admin from './Admin';
 import './styles/App.css';
+import Logo from './assets/LdNR.png';
 import New from './New';
 
 function Inicio(props) {
@@ -28,6 +29,9 @@ function Inicio(props) {
 
   return (
       <>
+          <div className={"Imagen"}>
+              <img src={Logo} className={"Logo"} alt={"Logo"} />
+          </div>
         <header className='SearchBar'>
           <nav>
             <ul>

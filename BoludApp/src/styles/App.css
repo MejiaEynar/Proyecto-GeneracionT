@@ -10,6 +10,7 @@ body {
   z-index: 1000;
   width: 100%;
 }
+
 .SearchBar > nav > ul {
   display: flex;
   padding: 15px;
@@ -47,6 +48,16 @@ body {
   border: 1px solid;
   cursor: pointer;
   font-weight: bold;
+}
+
+.Imagen {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.Logo {
+    width: 50px;
+    height: 50px;
 }
 
 .admin {
