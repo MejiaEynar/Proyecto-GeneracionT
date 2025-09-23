@@ -1,6 +1,4 @@
 import {  Link } from 'react-router-dom';
-import Markdown from 'react-markdown';
-import remarkGfm from 'remark-gfm'; 
 import { useState } from 'react';
 import "./styles/New.css";
 
