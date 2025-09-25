@@ -8,6 +8,8 @@ import './styles/App.css';
 import Logo from './assets/LdNR.png';
 import luz from './assets/luz.png';
 import oscuridad from './assets/oscuridad.png';
+import like from './assets/like.png';
+import like1 from './assets/like1.png';
 
 import New from './New';
 
@@ -58,8 +60,8 @@ function Inicio(props) {
                             </h1>
                             <h4>{publicacion.usuario}</h4>
                             <Markdown remarkPlugins={[remarkGfm]}>{publicacion.contenido}</Markdown>
-                            <button onClick={() => handleLike(publicacion.id)}>
-                                {likedPosts.includes(publicacion.id) ? '❤️' : '🤍'} Me gusta ({publicacion.likes || 0})
+                            <button className={"boton"} onClick={() => handleLike(publicacion.id)}>
+                                {likedPosts.includes(publicacion.id) ?  <img src={like1} className={"like"} alt={"like"} /> :  <img src={like} className={"like"} alt={"like"} />}{publicacion.likes || 0}
                             </button>
                         </div>
                     ))
