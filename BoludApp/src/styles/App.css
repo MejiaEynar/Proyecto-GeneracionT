@@ -43,13 +43,18 @@ body {
 }
 
 .boton {
-    width: 24px;
-    height: 24px;
-    background-color: transparent; /* Hace el fondo del botón transparente */
-    border: none; /* Elimina cualquier borde que el botón pueda tener */
-    cursor: pointer; /* Cambia el cursor para indicar que es clickeable */
+    display: inline-flex;       /* coloca el contenido en fila */
+    align-items: center;        /* centra verticalmente el ícono y el número */
+    gap: 6px;                   /* espacio entre el corazón y el número */
+    width: auto;                /* ya no necesitamos ancho/alto fijos */
+    height: auto;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
     font-weight: bold;
+    padding: 0;                 /* quita relleno si no lo querés */
 }
+
 
 .Imagen {
     display: flex;
