@@ -90,7 +90,7 @@ function Comentar(props) {
                             <h4>{publicacion.usuario}</h4>
                             <h3>{publicacion.titulo}</h3>
                             <Markdown remarkPlugins={[remarkGfm]}>{publicacion.contenido}</Markdown>
-                            <button className={"boton"} onClick={() => handleLike(publicacion.id)}>
+                            <button className={`boton ${likedPosts.includes(publicacion.id) ? 'liked' : ''}`} onClick={() => handleLike(publicacion.id)}>
                                 {likedPosts.includes(publicacion.id) ?  <img src={like1} className={"like"} alt={"like"} /> :  <img src={like} className={"like"} alt={"like"} />}{publicacion.likes || 0} Me gusta
                             </button>
                         </div>
@@ -129,7 +129,7 @@ function Comentar(props) {
                             <Markdown remarkPlugins={[remarkGfm]}>
                                 {comentario.comentario}
                             </Markdown>
-                            <button className={"boton"} onClick={() => handleLikeComentario(index)}>
+                            <button  className={`boton ${likedComentarios[index]?.liked ? 'liked' : ''}`} onClick={() => handleLikeComentario(index)}>
                                 {likedComentarios[index]?.liked ? <img src={like1} className={"like"} alt={"like"} /> :  <img src={like} className={"like"} alt={"like"} />} {likedComentarios[index]?.count || 0} Me gusta
                             </button>
                         </div>

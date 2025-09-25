@@ -52,9 +52,12 @@ body {
     border: none;
     cursor: pointer;
     font-weight: bold;
-    padding: 0;                 /* quita relleno si no lo querés */
+    padding: 0;
+    /* quita relleno si no lo querés */
 }
-
+.boton.liked {
+    color: #e91e63;  /* rosa cuando ya diste me gusta */
+}
 
 .Imagen {
     display: flex;
