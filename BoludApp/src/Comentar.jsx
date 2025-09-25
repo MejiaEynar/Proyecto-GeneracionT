@@ -5,10 +5,13 @@ import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import like1 from "./assets/like1.png";
 import like from "./assets/like.png";
+import inicioWhite from "./assets/inicioWhite.png"
+import inicioBlack from "./assets/inicioBlack.png"
+
 
 function Comentar(props) {
     const { id } = useParams();
-    const { publicaciones, likedPosts, handleLike } = props;
+    const { publicaciones, likedPosts, handleLike, theme} = props;
     const [nombreUsuario, setNombreUsuario] = useState('');
     const [comentario, setComentario] = useState('');
     const [comentarios, setComentarios] = useState([]);
@@ -75,7 +78,7 @@ function Comentar(props) {
             <header className='Nav-comentar'>
                 <ul>
                     <li>
-                        <Link className="inicio" to="/">Inicio</Link>
+                        <Link className="inicio" to="/">{theme === 'light' ?  <img src={inicioBlack} className={"Logo"} alt={"modo claro"} /> : <img src={inicioWhite} className={"Logo"} alt={"modo oscuro"}/>}</Link>
                     </li>
                 </ul>
             </header>
