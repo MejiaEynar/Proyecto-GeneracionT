@@ -3,6 +3,8 @@ import { useParams, Link } from 'react-router-dom';
 import "./styles/Comentar.css"
 import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import like1 from "./assets/like1.png";
+import like from "./assets/like.png";
 
 function Comentar(props) {
     const { id } = useParams();
@@ -85,8 +87,8 @@ function Comentar(props) {
                             <h4>{publicacion.usuario}</h4>
                             <h3>{publicacion.titulo}</h3>
                             <Markdown remarkPlugins={[remarkGfm]}>{publicacion.contenido}</Markdown>
-                            <button onClick={() => handleLike(publicacion.id)}>
-                                {likedPosts.includes(publicacion.id) ? '❤️' : '🤍'} Me gusta ({publicacion.likes || 0})
+                            <button className={"boton"} onClick={() => handleLike(publicacion.id)}>
+                                {likedPosts.includes(publicacion.id) ?  <img src={like1} className={"like"} alt={"like"} /> :  <img src={like} className={"like"} alt={"like"} />}{publicacion.likes || 0} Me gusta
                             </button>
                         </div>
                     ) : (
@@ -124,8 +126,8 @@ function Comentar(props) {
                             <Markdown remarkPlugins={[remarkGfm]}>
                                 {comentario.comentario}
                             </Markdown>
-                            <button onClick={() => handleLikeComentario(index)}>
-                                {likedComentarios[index]?.liked ? '❤️' : '🤍'} Me gusta ({likedComentarios[index]?.count || 0})
+                            <button className={"boton"} onClick={() => handleLike(publicacion.id)}>
+                                {likedPosts.includes(publicacion.id) ?  <img src={like1} className={"like"} alt={"like"} /> :  <img src={like} className={"like"} alt={"like"} />}{publicacion.likes || 0} Me gusta
                             </button>
                         </div>
                     ))}
