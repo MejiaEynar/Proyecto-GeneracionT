@@ -17,8 +17,11 @@ import New from './New';
 function Inicio(props) {
     const { admin, toggleTheme, theme, publicaciones, setPublicaciones, likedPosts, handleLike } = props;
 
-    // The state and logic for publicaciones and likedPosts are now gone from here
-    // The useEffect for loading publications is also moved to App.jsx
+    useEffect(() => {
+        const publicacionesGuardadas = JSON.parse(localStorage.getItem('publicaciones')) || [];
+        setPublicaciones(publicacionesGuardadas);
+    }, []);
+
     useEffect(() => {
         document.body.className = theme;
     }, [theme]);
