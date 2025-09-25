@@ -126,8 +126,8 @@ function Comentar(props) {
                             <Markdown remarkPlugins={[remarkGfm]}>
                                 {comentario.comentario}
                             </Markdown>
-                            <button className={"boton"} onClick={() => handleLike(publicacion.id)}>
-                                {likedPosts.includes(publicacion.id) ?  <img src={like1} className={"like"} alt={"like"} /> :  <img src={like} className={"like"} alt={"like"} />}{publicacion.likes || 0} Me gusta
+                            <button onClick={() => handleLikeComentario(index)}>
+                                {likedComentarios[index]?.liked ? '❤️' : '🤍'} Me gusta ({likedComentarios[index]?.count || 0})
                             </button>
                         </div>
                     ))}
