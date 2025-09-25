@@ -10,6 +10,7 @@ import luz from './assets/luz.png';
 import oscuridad from './assets/oscuridad.png';
 import like from './assets/like.png';
 import like1 from './assets/like1.png';
+import postLogo from './assets/postLogo.png'
 
 import New from './New';
 
@@ -41,7 +42,7 @@ function Inicio(props) {
                 <nav>
                     <ul>
                         {admin && <p className='admin'>ADMIN</p>}
-                        <li><Link className='New' to='/new'>New</Link></li>
+                        <li><Link className='New' to='/new'> <img src={postLogo} className={"Logo"} alt={"modo oscuro"} /> </Link></li>
                         <li>
                             <button className={"boton"} onClick={toggleTheme}>
                                 {theme === 'light' ?  <img src={oscuridad} className={"Logo"} alt={"modo oscuro"} /> : <img src={luz} className={"Logo"} alt={"modo claro"} /> }
