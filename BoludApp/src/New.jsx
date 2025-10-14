@@ -1,11 +1,16 @@
 import {  Link } from 'react-router-dom';
 import { useState } from 'react';
 import "./styles/New.css";
+import inicioBlack from "./assets/inicioBlack.png";
+import inicioWhite from "./assets/inicioWhite.png";
 
 function New() {
   const [titulo, setTitulo] = useState('');
   const [usuario, setUsuario] = useState('');
   const [contenido, setContenido] = useState('');
+  const [theme] = useState(
+      localStorage.getItem('theme') || 'light'
+  );
   const [publicaciones, setPublicaciones] = useState([]);
   const LIMITE_CARACTERES = 280;
   const caracteresRestantes = LIMITE_CARACTERES - contenido.length;
@@ -40,7 +45,9 @@ function New() {
         <header className='nav-New'>
           <nav>
             <ul>
-              <li><Link className="inicio" to="/">Inicio</Link></li>
+              <li>
+                <Link className="inicio" to="/">{theme === 'light' ?  <img src={inicioBlack} className={"Logo"} alt={"modo claro"} /> : <img src={inicioWhite} className={"Logo"} alt={"modo oscuro"}/>}</Link>
+              </li>
             </ul>
           </nav>
         </header>
