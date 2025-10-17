@@ -1,0 +1,39 @@
+.search-form-flex {
+    /* Habilita Flexbox */
+    display: flex;
+
+    /* Alinea los elementos en el centro del contenedor (verticalmente) */
+    align-items: center;
+
+    /* Distribuye el espacio entre los elementos y los centra */
+    justify-content: center;
+
+    /* Espacio entre el input y el botón */
+    gap: 10px;
+
+    /* Estilo general para centrar el formulario en la pantalla */
+    margin: 20px auto;
+    max-width: 600px;
+    padding: 0 20px;
+}
+
+/* Estilo para el campo de entrada */
+.search-form-flex .search-input {
+    /* Permite que el input ocupe el espacio disponible */
+    flex-grow: 1;
+
+    /* Asegúrate de que el input tenga un estilo agradable */
+    padding: 10px 15px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    font-size: 16px;
+}
+
+/* Estilo para el botón (si usas la clase .boton) */
+.search-form-flex .boton {
+    /* Elimina el padding si la imagen ya tiene el tamaño deseado */
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    border-radius: 50%; /* Si quieres que el botón sea redondo */
+}

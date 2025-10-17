@@ -8,6 +8,11 @@ import inicioBlack from "./assets/inicioBlack.png"; // Asume que necesitas estos
 import inicioWhite from "./assets/inicioWhite.png";
 import like from './assets/like.png';
 import like1 from './assets/like1.png';
+import './styles/buscador.css'
+import buscarBlack from './assets/buscar.png';
+import buscarWhite from './assets/buscar1.png';
+import './styles/App.css';
+import "./styles/New.css";
 
 function Buscador(props) {
     const { admin, theme, publicaciones, setPublicaciones, likedPosts, handleLike } = props;
@@ -47,30 +52,19 @@ function Buscador(props) {
 
     return (
         <div className={theme}>
-            <header className='nav-Inicio'>
-                <nav>
-                    <ul>
-                        {/* BOTÓN PARA VOLVER A INICIO */}
-                        <li>
-                            <Link className="inicio" to="/">
-                                {theme === 'light' ?  <img src={inicioBlack} className={"Logo"} alt={"Inicio"} /> : <img src={inicioWhite} className={"Logo"} alt={"Inicio"}/> }
-                            </Link>
-                        </li>
-                    </ul>
-                </nav>
-            </header>
+
 
             {/* 4. INTERFAZ DEL BUSCADOR */}
-            <form onSubmit={handleSearchClick} className='search-form'>
+            <form onSubmit={handleSearchClick} className='search-form-flex'>
                 <input
                     type="text"
-                    placeholder="Buscar posts por título, contenido o usuario..."
+                    placeholder="Buscar BoludApp"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className="search-input"
                 />
-                <button type="submit" className="search-button">
-                    Buscar 🔍
+                <button type="submit" className="boton">
+                      {theme === 'light' ?  <img src={buscarBlack} className={"Logo"} alt={"modo oscuro"} /> : <img src={buscarWhite} className={"Logo"} alt={"modo claro"} /> }
                 </button>
             </form>
 
@@ -99,7 +93,20 @@ function Buscador(props) {
                     </h4>
                 )}
             </main>
+            <header className='SearchBar'>
+                            <nav>
+                                <ul>
+                                    {/* BOTÓN PARA VOLVER A INICIO */}
+                                    <li>
+                                        <Link className="inicio" to="/">
+                                            {theme === 'light' ?  <img src={inicioBlack} className={"Logo"} alt={"Inicio"} /> : <img src={inicioWhite} className={"Logo"} alt={"Inicio"}/> }
+                                        </Link>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </header>
         </div>
+
     );
 }
 
