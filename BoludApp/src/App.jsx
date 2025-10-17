@@ -18,9 +18,14 @@ import New from './New';
 function Inicio(props) {
     const { admin, toggleTheme, theme, publicaciones, setPublicaciones, likedPosts, handleLike } = props;
 
+    // ESTADOS PARA LA BÚSQUEDA
+    const [searchTerm, setSearchTerm] = useState(''); // Lo que se escribe en el input
+    const [searchQuery, setSearchQuery] = useState(''); // Lo que se usa para filtrar (se activa con el botón)
+
     useEffect(() => {
         const publicacionesGuardadas = JSON.parse(localStorage.getItem('publicaciones')) || [];
         setPublicaciones(publicacionesGuardadas);
+        setSearchQuery('');
     }, []);
 
     useEffect(() => {
@@ -33,6 +38,28 @@ function Inicio(props) {
         localStorage.setItem('publicaciones', JSON.stringify(publicacionesActualizadas));
     };
 
+    // FUNCIÓN PARA ACTIVAR LA BÚSQUEDA (CORRECCIÓN DEL ERROR)
+    const handleSearchClick = (e) => {
+        e.preventDefault();
+        setSearchQuery(searchTerm); // Establece el query para activar el filtro
+    };
+
+    // LÓGICA DE FILTRADO (Se ejecuta en cada renderizado)
+    const postsFiltrados = publicaciones
+       .slice()
+       .reverse()
+       .filter(post => {
+           const term = searchQuery.toLowerCase();
+           // Si searchQuery está vacío, se muestran todos los posts
+           if (!term) return true;
+
+           const titulo = post.titulo ? post.titulo.toLowerCase() : '';
+           const contenido = post.contenido ? post.contenido.toLowerCase() : '';
+           const usuario = post.usuario ? post.usuario.toLowerCase() : '';
+
+           return titulo.includes(term) || contenido.includes(term) || usuario.includes(term);
+       });
+
     return (
         <>
             <div className={"Imagen"}>
@@ -42,7 +69,7 @@ function Inicio(props) {
                 <nav>
                     <ul>
                         {admin && <p className='admin'>ADMIN</p>}
-                        <li><Link className='New' to='/new'> <img src={postLogo} className={"Logo"} alt={"modo oscuro"} /> </Link></li>
+                        <li><Link className='New' to='/new'> <img src={postLogo} className={"Logo"} alt={"Crear nuevo post"} /> </Link></li>
                         <li>
                             <button className={"boton"} onClick={toggleTheme}>
                                 {theme === 'light' ?  <img src={oscuridad} className={"Logo"} alt={"modo oscuro"} /> : <img src={luz} className={"Logo"} alt={"modo claro"} /> }
@@ -51,9 +78,25 @@ function Inicio(props) {
                     </ul>
                 </nav>
             </header>
+
+            {/* FORMULARIO DE BÚSQUEDA CON BOTÓN */}
+            <form onSubmit={handleSearchClick} className='search-form'>
+                <input
+                    type="text"
+                    placeholder="Buscar posts por título, contenido o usuario..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)} // Solo actualiza el texto del input
+                    className="search-input"
+                />
+                <button type="submit" className="search-button">
+                    Buscar 🔍
+                </button>
+            </form>
+
             <main>
-                {publicaciones && publicaciones.length > 0 ? (
-                    publicaciones.map((publicacion) => (
+                {/* RENDERIZAR LOS POSTS FILTRADOS */}
+                {postsFiltrados && postsFiltrados.length > 0 ? (
+                    postsFiltrados.map((publicacion) => (
                         <div key={publicacion.id} className='publicacion'>
                             <h1>
                                 <Link to={`/post/${publicacion.id}`}>
@@ -65,12 +108,15 @@ function Inicio(props) {
                             <h4>{publicacion.usuario}</h4>
                             <Markdown remarkPlugins={[remarkGfm]}>{publicacion.contenido}</Markdown>
                             <button className={"boton"} onClick={() => handleLike(publicacion.id)}>
-                                {likedPosts.includes(publicacion.id) ?  <img src={like1} className={"like"} alt={"like"} /> :  <img src={like} className={"like"} alt={"like"} />}{publicacion.likes || 0}
+                                {likedPosts.includes(publicacion.id) ?  <img src={like1} className={"like"} alt={"Me gusta"} /> :  <img src={like} className={"like"} alt={"No me gusta"} />}{publicacion.likes || 0}
                             </button>
                         </div>
                     ))
                 ) : (
-                    <h4 className='h4-h4'>No hay Publicaciones</h4>
+                    <h4 className='h4-h4'>
+                        {/* Muestra un mensaje diferente si hay una búsqueda activa sin resultados */}
+                        {searchQuery ? `No se encontraron resultados para "${searchQuery}".` : 'No hay Publicaciones'}
+                    </h4>
                 )}
             </main>
         </>
