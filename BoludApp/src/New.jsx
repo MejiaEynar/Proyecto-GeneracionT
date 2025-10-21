@@ -1,23 +1,30 @@
-import {  Link } from 'react-router-dom';
-import { useState } from 'react';
+import {  Link, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import "./styles/New.css";
 import inicioBlack from "./assets/inicioBlack.png";
 import inicioWhite from "./assets/inicioWhite.png";
 
-function New() {
+function New(props) {
+  const { theme, isLoggedIn, currentUser } = props;
+  const navigate = useNavigate();
   const [titulo, setTitulo] = useState('');
-  const [usuario, setUsuario] = useState('');
+
   const [contenido, setContenido] = useState('');
-  const [theme] = useState(
-      localStorage.getItem('theme') || 'light'
-  );
+  // ELIMINADO: const [usuario, setUsuario] = useState(''); // <--- ELIMINADO ESTADO REDUNDANTE
   const [publicaciones, setPublicaciones] = useState([]);
   const LIMITE_CARACTERES = 280;
   const caracteresRestantes = LIMITE_CARACTERES - contenido.length;
 
+  useEffect(() => {
+    if (!isLoggedIn) {
+      navigate('/login');
+      alert('Debes iniciar sesión para publicar un nuevo post.');
+    }
+  }, [isLoggedIn, navigate]);
+
   function agregarPublicacion(nuevaPublicacion) {
     const publicacionesGuardadas = JSON.parse(localStorage.getItem('publicaciones')) || [];
-    
+
     const publicacionesActualizadas = [...publicacionesGuardadas, nuevaPublicacion];
 
     setPublicaciones(publicacionesActualizadas);
@@ -26,22 +33,22 @@ function New() {
 
   function handleClick(e) {
     e.preventDefault();
-    if (usuario && contenido) {
+    if (currentUser && contenido) {
       const nuevaPublicacion = {
         id: Date.now(),
-        usuario: usuario,
+        usuario: currentUser,
         titulo: titulo,
         contenido: contenido,
       };
       agregarPublicacion(nuevaPublicacion);
       setContenido('');
       setTitulo('');
-      setUsuario('');
+      navigate('/');
     }
   }
 
   return (
-    <>
+      <>
         <header className='nav-New'>
           <nav>
             <ul>
@@ -55,36 +62,32 @@ function New() {
         <div className='form-New'>
           <form  onSubmit={handleClick}>
             <h1>Nuevo Post</h1>
+            {isLoggedIn && <p>Publicando como: <strong>{currentUser}</strong></p>}
             <input
-              type="text"
-              value={usuario}
-              onChange={(e) => setUsuario(e.target.value)}
-              placeholder="Usuario"
-            />
-            <input
-              type="text"
-              value={titulo}
-              onChange={(e) => setTitulo(e.target.value)}
-              placeholder="Titulo"
+                type="text"
+                value={titulo}
+                onChange={(e) => setTitulo(e.target.value)}
+                placeholder="Titulo"
             />
             <textarea
-              id="content"
-              value={contenido}
-              onChange={(e) => setContenido(e.target.value)}
-              placeholder="¿Qué estás pensando?"
-              maxLength={LIMITE_CARACTERES} // Esto limita la entrada
+                id="content"
+                value={contenido}
+                onChange={(e) => setContenido(e.target.value)}
+                placeholder="¿Qué estás pensando?"
+                maxLength={LIMITE_CARACTERES} // Esto limita la entrada
             />
             <p style={{ color: caracteresRestantes < 0 ? 'red' : 'inherit' }}>
               {caracteresRestantes}
             </p>
             <input
-              type="submit"
-              value="Publicar"
-              disabled={!usuario || !contenido || caracteresRestantes < 0}
+                type="submit"
+                value="Publicar"
+                // CORRECCIÓN: Usar !currentUser en lugar de !usuario
+                disabled={!currentUser || !contenido || caracteresRestantes < 0}
             />
-      </form>
-      </div>
-    </>
+          </form>
+        </div>
+      </>
   );
 }
 

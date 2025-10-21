@@ -13,11 +13,13 @@ import like1 from './assets/like1.png';
 import postLogo from './assets/postLogo.png'
 import Buscador from './Buscador';
 import New from './New';
+import Login from './Login';
 import buscarBlack from './assets/buscar.png';
 import buscarWhite from './assets/buscar1.png';
-// This function will now live in App.jsx
+
 function Inicio(props) {
-    const { admin, toggleTheme, theme, publicaciones, setPublicaciones, likedPosts, handleLike } = props;
+    // ACEPTA Y UTILIZA LAS PROPS DE SESIÓN Y HANDLERS
+    const { admin, toggleTheme, theme, publicaciones, setPublicaciones, likedPosts, handleLike, isLoggedIn, currentUser, handleLogout } = props;
 
     useEffect(() => {
         const publicacionesGuardadas = JSON.parse(localStorage.getItem('publicaciones')) || [];
@@ -27,6 +29,8 @@ function Inicio(props) {
     useEffect(() => {
         document.body.className = theme;
     }, [theme]);
+
+    // ELIMINADO: Los estados isLoggedIn y currentUser NO deben estar aquí.
 
     const borrarPublicacion = (id) => {
         const publicacionesActualizadas = publicaciones.filter((publicacion) => publicacion.id !== id);
@@ -44,13 +48,24 @@ function Inicio(props) {
                 <nav>
                     <ul>
                         {admin && <p className='admin'>ADMIN</p>}
+
+                        {/* LÓGICA DE SESIÓN EN LA BARRA DE NAVEGACIÓN */}
+                        {isLoggedIn ? (
+                            <>
+                                <p className='current-user'>Hola, {currentUser}!</p>
+                                <li><button onClick={handleLogout} className='logout-button'>Cerrar Sesión</button></li>
+                            </>
+                        ) : (
+                            <li><Link className='Login' to='/login'>Iniciar Sesión</Link></li>
+                        )}
+
                         <li><Link className='New' to='/new'> <img src={postLogo} className={"Logo"} alt={"modo oscuro"} /> </Link></li>
                         <li>
                             <button className={"boton"} onClick={toggleTheme}>
                                 {theme === 'light' ?  <img src={oscuridad} className={"Logo"} alt={"modo oscuro"} /> : <img src={luz} className={"Logo"} alt={"modo claro"} /> }
                             </button>
                         </li>
-                                    <li><Link className='Buscador' to='/buscador'>{theme === 'light' ?  <img src={buscarBlack} className={"Logo"} alt={"modo oscuro"} /> : <img src={buscarWhite} className={"Logo"} alt={"modo claro"} />}</Link></li>
+                        <li><Link className='Buscador' to='/buscador'>{theme === 'light' ?  <img src={buscarBlack} className={"Logo"} alt={"modo oscuro"} /> : <img src={buscarWhite} className={"Logo"} alt={"modo claro"} />}</Link></li>
 
                     </ul>
                 </nav>
@@ -92,13 +107,41 @@ function App() {
     const [publicaciones, setPublicaciones] = useState([]);
     const [likedPosts, setLikedPosts] = useState([]);
 
+    // AÑADIR LOS ESTADOS DE SESIÓN AL INICIO DE App
+    const [isLoggedIn, setIsLoggedIn] = useState(() => {
+        return JSON.parse(localStorage.getItem('isLoggedIn')) || false;
+    });
+    const [currentUser, setCurrentUser] = useState(() => {
+        return localStorage.getItem('currentUser') || '';
+    });
+
+
     useEffect(() => {
         const publicacionesGuardadas = JSON.parse(localStorage.getItem('publicaciones')) || [];
         setPublicaciones(publicacionesGuardadas);
 
+        // CORRECCIÓN: Se ELIMINAN las líneas que causaban el ReferenceError.
+        // localStorage.setItem('isLoggedIn', JSON.stringify(isLoggedIn));
+        // localStorage.setItem('currentUser', currentUser);
+
         const likedPostsFromStorage = JSON.parse(localStorage.getItem('likedPosts')) || [];
         setLikedPosts(likedPostsFromStorage);
     }, []);
+
+    const handleLogin = (username) => {
+        setIsLoggedIn(true);
+        setCurrentUser(username);
+        localStorage.setItem('isLoggedIn', JSON.stringify(true));
+        localStorage.setItem('currentUser', username);
+    };
+
+    const handleLogout = () => {
+        setIsLoggedIn(false);
+        setCurrentUser('');
+        setAdmin(false);
+        localStorage.removeItem('isLoggedIn');
+        localStorage.removeItem('currentUser');
+    };
 
     const handleLike = (id) => {
         const isLiked = likedPosts.includes(id);
@@ -134,23 +177,56 @@ function App() {
     };
 
     return (
-       <Routes>
-                   <Route path='/' element={<Inicio admin={admin} toggleTheme={toggleTheme} theme={theme} publicaciones={publicaciones} setPublicaciones={setPublicaciones} likedPosts={likedPosts} handleLike={handleLike} />} />
-                   <Route path='/post/:id' element={<Comentar theme={theme} publicaciones={publicaciones} setPublicaciones={setPublicaciones} likedPosts={likedPosts} handleLike={handleLike} />} />
-                   <Route path='/new' element={<New theme={theme} />} />
-                   <Route path='/admin' element={<Admin setAdmin={setAdmin} theme={theme} />} />
+        <Routes>
+            <Route path='/' element={<Inicio
+                admin={admin}
+                toggleTheme={toggleTheme}
+                theme={theme}
+                publicaciones={publicaciones}
+                setPublicaciones={setPublicaciones}
+                likedPosts={likedPosts}
+                // Se pasa la versión protegida de handleLike
+                handleLike={isLoggedIn ? handleLike : () => alert('Debes iniciar sesión para dar "Me gusta".')}
+                isLoggedIn={isLoggedIn}
+                currentUser={currentUser}
+                handleLogout={handleLogout} // Se pasa el handler
+            />} />
 
-                   {/* RUTA CORREGIDA: Pasar todas las props requeridas */}
-                   <Route path='/buscador' element={<Buscador
-                       admin={admin}
-                       toggleTheme={toggleTheme}
-                       theme={theme}
-                       publicaciones={publicaciones}
-                       setPublicaciones={setPublicaciones}
-                       likedPosts={likedPosts}
-                       handleLike={handleLike}
-                   />} />
-               </Routes>
+            <Route path='/login' element={<Login
+                theme={theme}
+                handleLogin={handleLogin}
+            />} />
+
+            <Route path='/new' element={<New
+                theme={theme}
+                isLoggedIn={isLoggedIn}
+                currentUser={currentUser}
+            />} />
+
+            <Route path='/post/:id' element={<Comentar
+                theme={theme}
+                publicaciones={publicaciones}
+                setPublicaciones={setPublicaciones}
+                likedPosts={likedPosts}
+                // Se pasa la versión protegida de handleLike
+                handleLike={isLoggedIn ? handleLike : () => alert('Debes iniciar sesión para dar "Me gusta" a la publicación.')}
+                isLoggedIn={isLoggedIn}
+                currentUser={currentUser}
+            />} />
+
+            <Route path='/admin' element={<Admin setAdmin={setAdmin} theme={theme} />} />
+
+            <Route path='/buscador' element={<Buscador
+                admin={admin}
+                toggleTheme={toggleTheme}
+                theme={theme}
+                publicaciones={publicaciones}
+                setPublicaciones={setPublicaciones}
+                likedPosts={likedPosts}
+                // Se pasa la versión protegida de handleLike
+                handleLike={isLoggedIn ? handleLike : () => alert('Debes iniciar sesión para dar "Me gusta".')}
+            />} />
+        </Routes>
     );
 }
 

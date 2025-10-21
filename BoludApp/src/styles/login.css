@@ -1,0 +1,100 @@
+/* ==================================== */
+/* Archivo: Login.css                   */
+/* Estilos para el componente Login.jsx */
+/* ==================================== */
+
+.login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+    min-height: 100vh; /* Asegura que ocupe toda la altura */
+    box-sizing: border-box;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 400px; /* Ancho típico de un formulario de sesión */
+    padding: 30px;
+    border-radius: 12px;
+    border: 1px solid; /* Borde que cambia con el tema */
+    margin-top: 50px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); /* Sombra sutil */
+}
+
+.login-form h1 {
+    font-size: 28px;
+    margin-bottom: 30px;
+    text-align: center;
+    font-weight: 700;
+}
+
+.login-form input[type=text],
+.login-form input[type=password] {
+    width: 100%;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    border: 1px solid; /* Borde del input que cambia con el tema */
+    background-color: transparent;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+.login-form button[type=submit] {
+    width: 100%;
+    padding: 12px 0;
+    margin-top: 10px;
+    border-radius: 50px; /* Botón redondeado al estilo X */
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    background-color: #1d9bf0; /* Color primario de acción (azul) */
+    color: #ffffff;
+    font-size: 17px;
+    transition: background-color 0.2s ease;
+}
+
+.login-form button[type=submit]:hover {
+    background-color: #1a8cd8; /* Azul más oscuro al pasar el ratón */
+}
+
+/* ==================================== */
+/* ESTILOS ESPECÍFICOS DEL TEMA CLARO   */
+/* ==================================== */
+.light .login-container {
+    background-color: #ffffff;
+    color: #0f1419;
+}
+
+.light .login-form {
+    background-color: #ffffff;
+    border-color: #cfd9de; /* Borde gris claro */
+}
+
+.light .login-form input {
+    border-color: #cfd9de; /* Borde de input gris claro */
+    color: #0f1419;
+}
+
+/* ==================================== */
+/* ESTILOS ESPECÍFICOS DEL TEMA OSCURO  */
+/* ==================================== */
+.dark .login-container {
+    background-color: #16202b; /* Fondo oscuro */
+    color: #e7e9ea; /* Texto claro */
+}
+
+.dark .login-form {
+    background-color: #16202b;
+    border-color: #333639; /* Borde gris oscuro */
+    box-shadow: none; /* Mejor sin sombra en oscuro */
+}
+
+.dark .login-form input {
+    background-color: #000000; /* Fondo del input negro */
+    border-color: #333639; /* Borde del input gris oscuro */
+    color: #e7e9ea;
+}
