@@ -18,10 +18,9 @@ import buscarBlack from './assets/buscar.png';
 import buscarWhite from './assets/buscar1.png';
 
 function Inicio(props) {
-    // ACEPTA Y UTILIZA LAS PROPS DE SESIÓN Y HANDLERS
-    const { admin, toggleTheme, theme, publicaciones, setPublicaciones, likedPosts, handleLike, isLoggedIn, currentUser, handleLogout } = props;
+    const { admin, toggleTheme, theme, publicaciones, setPublicaciones, handleLike, isLoggedIn, currentUser, handleLogout } = props;
 
-    useEffect(() => {
+     useEffect(() => {
         const publicacionesGuardadas = JSON.parse(localStorage.getItem('publicaciones')) || [];
         setPublicaciones(publicacionesGuardadas);
     }, []);
@@ -29,8 +28,6 @@ function Inicio(props) {
     useEffect(() => {
         document.body.className = theme;
     }, [theme]);
-
-    // ELIMINADO: Los estados isLoggedIn y currentUser NO deben estar aquí.
 
     const borrarPublicacion = (id) => {
         const publicacionesActualizadas = publicaciones.filter((publicacion) => publicacion.id !== id);
@@ -72,22 +69,30 @@ function Inicio(props) {
             </header>
             <main>
                 {publicaciones && publicaciones.length > 0 ? (
-                    publicaciones.map((publicacion) => (
-                        <div key={publicacion.id} className='publicacion'>
-                            <h1>
-                                <Link to={`/post/${publicacion.id}`}>
-                                    {publicacion.titulo}
-                                </Link>
-                                {admin && (
-                                    <button className='remove' id={publicacion.id} onClick={() => borrarPublicacion(publicacion.id)}>X</button>)}
-                            </h1>
-                            <h4>{publicacion.usuario}</h4>
-                            <Markdown remarkPlugins={[remarkGfm]}>{publicacion.contenido}</Markdown>
-                            <button className={"boton"} onClick={() => handleLike(publicacion.id)}>
-                                {likedPosts.includes(publicacion.id) ?  <img src={like1} className={"like"} alt={"like"} /> :  <img src={like} className={"like"} alt={"like"} />}{publicacion.likes || 0}
-                            </button>
-                        </div>
-                    ))
+                    publicaciones.map((publicacion) => {
+                        // NUEVA LÓGICA: Determinar el estado del like basado en publicacion.likedBy
+                        const likedBy = publicacion.likedBy || [];
+                        const userHasLiked = isLoggedIn && likedBy.includes(currentUser);
+                        const likeCount = likedBy.length; // El conteo se deriva de la longitud del array
+
+                        return (
+                            <div key={publicacion.id} className='publicacion'>
+                                <h1>
+                                    <Link to={`/post/${publicacion.id}`}>
+                                        {publicacion.titulo}
+                                    </Link>
+                                    {admin && (
+                                        <button className='remove' id={publicacion.id} onClick={() => borrarPublicacion(publicacion.id)}>X</button>)}
+                                </h1>
+                                <h4>{publicacion.usuario}</h4>
+                                <Markdown remarkPlugins={[remarkGfm]}>{publicacion.contenido}</Markdown>
+                                {/* Botón usa el nuevo estado y conteo */}
+                                <button className={"boton"} onClick={() => handleLike(publicacion.id)}>
+                                    {userHasLiked ?  <img src={like1} className={"like"} alt={"like"} /> :  <img src={like} className={"like"} alt={"like"} />}{likeCount}
+                                </button>
+                            </div>
+                        );
+                    })
                 ) : (
                     <h4 className='h4-h4'>No hay Publicaciones</h4>
                 )}
@@ -96,15 +101,12 @@ function Inicio(props) {
         </>
     );
 }
-
-// All shared state and logic for publications and likes is moved here
 function App() {
     const [admin, setAdmin] = useState(false);
     const [theme, setTheme] = useState(
         localStorage.getItem('theme') || 'light'
     );
     const [publicaciones, setPublicaciones] = useState([]);
-    const [likedPosts, setLikedPosts] = useState([]);
 
     // AÑADIR LOS ESTADOS DE SESIÓN AL INICIO DE App
     const [isLoggedIn, setIsLoggedIn] = useState(() => {
@@ -116,15 +118,17 @@ function App() {
 
 
     useEffect(() => {
-        const publicacionesGuardadas = JSON.parse(localStorage.getItem('publicaciones')) || [];
+        let publicacionesGuardadas = JSON.parse(localStorage.getItem('publicaciones')) || [];
+
+        publicacionesGuardadas = publicacionesGuardadas.map(p => {
+            if (typeof p.likedBy === 'undefined') {
+                return { ...p, likedBy: [] };
+            }
+            return p;
+        });
+
         setPublicaciones(publicacionesGuardadas);
 
-        // CORRECCIÓN: Se ELIMINAN las líneas que causaban el ReferenceError.
-        // localStorage.setItem('isLoggedIn', JSON.stringify(isLoggedIn));
-        // localStorage.setItem('currentUser', currentUser);
-
-        const likedPostsFromStorage = JSON.parse(localStorage.getItem('likedPosts')) || [];
-        setLikedPosts(likedPostsFromStorage);
     }, []);
 
     const handleLogin = (username) => {
@@ -141,32 +145,35 @@ function App() {
         localStorage.removeItem('isLoggedIn');
         localStorage.removeItem('currentUser');
     };
-
     const handleLike = (id) => {
-        const isLiked = likedPosts.includes(id);
+        if (!isLoggedIn || !currentUser) return; // Doble chequeo, aunque ya está protegido en las rutas
+
+        const publicacion = publicaciones.find((p) => p.id === id);
+        if (!publicacion) return;
+
+        const likedBy = publicacion.likedBy || [];
+        const userHasLiked = likedBy.includes(currentUser);
 
         let updatedPublicaciones;
-        let updatedLikedPosts;
 
-        if (isLiked) {
-            updatedPublicaciones = publicaciones.map((publicacion) =>
-                publicacion.id === id ? { ...publicacion, likes: Math.max(0, (publicacion.likes || 0) - 1) } : publicacion
+        if (userHasLiked) {
+            const newLikedBy = likedBy.filter((user) => user !== currentUser);
+            updatedPublicaciones = publicaciones.map((p) =>
+                p.id === id ? { ...p, likedBy: newLikedBy } : p
             );
-            updatedLikedPosts = likedPosts.filter((postId) => postId !== id);
         } else {
-            updatedPublicaciones = publicaciones.map((publicacion) =>
-                publicacion.id === id ? { ...publicacion, likes: (publicacion.likes || 0) + 1 } : publicacion
+            const newLikedBy = [...likedBy, currentUser];
+            updatedPublicaciones = publicaciones.map((p) =>
+                p.id === id ? { ...p, likedBy: newLikedBy } : p
             );
-            updatedLikedPosts = [...likedPosts, id];
         }
 
         setPublicaciones(updatedPublicaciones);
+        // Persistir el cambio en localStorage
         localStorage.setItem('publicaciones', JSON.stringify(updatedPublicaciones));
 
-        setLikedPosts(updatedLikedPosts);
-        localStorage.setItem('likedPosts', JSON.stringify(updatedLikedPosts));
+        // ELIMINADO: Ya no se actualiza likedPosts
     };
-
     useEffect(() => {
         localStorage.setItem('theme', theme);
     }, [theme]);
@@ -183,8 +190,6 @@ function App() {
                 theme={theme}
                 publicaciones={publicaciones}
                 setPublicaciones={setPublicaciones}
-                likedPosts={likedPosts}
-                // Se pasa la versión protegida de handleLike
                 handleLike={isLoggedIn ? handleLike : () => alert('Debes iniciar sesión para dar "Me gusta".')}
                 isLoggedIn={isLoggedIn}
                 currentUser={currentUser}
@@ -206,8 +211,6 @@ function App() {
                 theme={theme}
                 publicaciones={publicaciones}
                 setPublicaciones={setPublicaciones}
-                likedPosts={likedPosts}
-                // Se pasa la versión protegida de handleLike
                 handleLike={isLoggedIn ? handleLike : () => alert('Debes iniciar sesión para dar "Me gusta" a la publicación.')}
                 isLoggedIn={isLoggedIn}
                 currentUser={currentUser}
@@ -221,8 +224,6 @@ function App() {
                 theme={theme}
                 publicaciones={publicaciones}
                 setPublicaciones={setPublicaciones}
-                likedPosts={likedPosts}
-                // Se pasa la versión protegida de handleLike
                 handleLike={isLoggedIn ? handleLike : () => alert('Debes iniciar sesión para dar "Me gusta".')}
             />} />
         </Routes>

@@ -11,16 +11,16 @@ import inicioBlack from "./assets/inicioBlack.png"
 
 function Comentar(props) {
     const { id } = useParams();
-    // RECIBE LAS NUEVAS PROPS DE SESIÓN
-    const { publicaciones, likedPosts, handleLike, theme, isLoggedIn, currentUser} = props;
-    const navigate = useNavigate(); // Hook de navegación
+    // CORRECCIÓN 1: Se elimina 'likedPosts' de la desestructuración de props.
+    const { publicaciones, handleLike, theme, isLoggedIn, currentUser} = props;
+    const navigate = useNavigate();
 
-    // ELIMINADO: const [nombreUsuario, setNombreUsuario] = useState('');
     const [comentario, setComentario] = useState('');
     const [comentarios, setComentarios] = useState([]);
     const [publicacion, setPublicacion] = useState(null);
 
-    // Estado para likes de comentarios (guarda cantidad y si el usuario ya dio like)
+    // Estado para likes de comentarios:
+    // Almacena: { indiceComentario: { count: N, likedBy: ['userA', 'userB', ...] } }
     const [likedComentarios, setLikedComentarios] = useState({});
 
     useEffect(() => {
@@ -57,12 +57,11 @@ function Comentar(props) {
             localStorage.setItem(`comentarios_${id}`, JSON.stringify(comentariosActualizados));
 
             setComentario('');
-            // ELIMINADO: setNombreUsuario('');
             setComentarios(comentariosActualizados);
         }
     }
 
-    // Manejar like en comentarios con contador
+    // CORRECCIÓN 3: Se aplica la lógica de likes por cuenta/usuario para comentarios
     function handleLikeComentario(index) {
         // 3. PROTEGER: Si no está logueado, redirigir
         if (!isLoggedIn) {
@@ -72,24 +71,35 @@ function Comentar(props) {
         }
 
         const updatedLikes = { ...likedComentarios };
+        const currentLikes = updatedLikes[index] || { count: 0, likedBy: [] }; // Inicializar si no existe
+        const userHasLiked = currentLikes.likedBy.includes(currentUser); // Comprobar si el usuario actual ya dio like
 
-        if (updatedLikes[index]?.liked) {
+        if (userHasLiked) {
             // Si ya tenía like, lo quitamos
             updatedLikes[index] = {
-                liked: false,
-                count: (updatedLikes[index].count || 1) - 1
+                count: currentLikes.count - 1,
+                // Quitar el usuario del array likedBy
+                likedBy: currentLikes.likedBy.filter(user => user !== currentUser)
             };
         } else {
             // Si no tenía like, lo agregamos
             updatedLikes[index] = {
-                liked: true,
-                count: (updatedLikes[index]?.count || 0) + 1
+                count: currentLikes.count + 1,
+                // Agregar el usuario al array likedBy
+                likedBy: [...currentLikes.likedBy, currentUser]
             };
         }
 
         setLikedComentarios(updatedLikes);
         localStorage.setItem(`likes_comentarios_${id}`, JSON.stringify(updatedLikes));
     }
+
+
+    // LÓGICA DE VISUALIZACIÓN DE LIKES DE PUBLICACIÓN (necesaria para el render)
+    const postLikedBy = publicacion?.likedBy || [];
+    const postUserHasLiked = isLoggedIn && postLikedBy.includes(currentUser);
+    const postLikeCount = postLikedBy.length;
+
 
     return (
         <>
@@ -108,9 +118,12 @@ function Comentar(props) {
                             <h4>{publicacion.usuario}</h4>
                             <h3>{publicacion.titulo}</h3>
                             <Markdown remarkPlugins={[remarkGfm]}>{publicacion.contenido}</Markdown>
-                            {/* handleLike ya está protegido en App.jsx */}
-                            <button className={`boton ${likedPosts.includes(publicacion.id) ? 'liked' : ''}`} onClick={() => handleLike(publicacion.id)}>
-                                {likedPosts.includes(publicacion.id) ?  <img src={like1} className={"like"} alt={"like"} /> :  <img src={like} className={"like"} alt={"like"} />}{publicacion.likes || 0} Me gusta
+                            {/* CORRECCIÓN 2: Se usa la nueva lógica likedBy */}
+                            <button
+                                className={`boton ${postUserHasLiked ? 'liked' : ''}`}
+                                onClick={() => handleLike(publicacion.id)}
+                            >
+                                {postUserHasLiked ?  <img src={like1} className={"like"} alt={"like"} /> :  <img src={like} className={"like"} alt={"like"} />}{postLikeCount} Me gusta
                             </button>
                         </div>
                     ) : (
@@ -145,17 +158,24 @@ function Comentar(props) {
                     <div className='Comen-title'>
                         <p>Comentarios</p>
                     </div>
-                    {comentarios.map((comentario, index) => (
-                        <div className='comentarios' key={index}>
-                            <p>{comentario.nombreUsuario}</p>
-                            <Markdown remarkPlugins={[remarkGfm]}>
-                                {comentario.comentario}
-                            </Markdown>
-                            <button  className={`boton ${likedComentarios[index]?.liked ? 'liked' : ''}`} onClick={() => handleLikeComentario(index)}>
-                                {likedComentarios[index]?.liked ? <img src={like1} className={"like"} alt={"like"} /> :  <img src={like} className={"like"} alt={"like"} />} {likedComentarios[index]?.count || 0} Me gusta
-                            </button>
-                        </div>
-                    ))}
+                    {/* El mapeo de comentarios usa la lógica de likedBy para comentarios */}
+                    {comentarios.map((comentario, index) => {
+                        // Determinar si el usuario actual dio like para el estilo del botón
+                        const currentCommentLikes = likedComentarios[index] || { count: 0, likedBy: [] };
+                        const userHasLiked = currentCommentLikes.likedBy.includes(currentUser);
+
+                        return (
+                            <div className='comentarios' key={index}>
+                                <p>{comentario.nombreUsuario}</p>
+                                <Markdown remarkPlugins={[remarkGfm]}>
+                                    {comentario.comentario}
+                                </Markdown>
+                                <button  className={`boton ${userHasLiked ? 'liked' : ''}`} onClick={() => handleLikeComentario(index)}>
+                                    {userHasLiked ? <img src={like1} className={"like"} alt={"like"} /> :  <img src={like} className={"like"} alt={"like"} />} {currentCommentLikes.count} Me gusta
+                                </button>
+                            </div>
+                        );
+                    })}
                 </section>
             </main>
         </>
