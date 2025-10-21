@@ -52,7 +52,6 @@ function Inicio(props) {
                         {/* LÓGICA DE SESIÓN EN LA BARRA DE NAVEGACIÓN */}
                         {isLoggedIn ? (
                             <>
-                                <p className='current-user'>Hola, {currentUser}!</p>
                                 <li><button onClick={handleLogout} className='logout-button'>Cerrar Sesión</button></li>
                             </>
                         ) : (

@@ -62,7 +62,6 @@ function New(props) {
         <div className='form-New'>
           <form  onSubmit={handleClick}>
             <h1>Nuevo Post</h1>
-            {isLoggedIn && <p>Publicando como: <strong>{currentUser}</strong></p>}
             <input
                 type="text"
                 value={titulo}
