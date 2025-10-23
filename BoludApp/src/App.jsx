@@ -55,6 +55,15 @@ function Inicio(props) {
         navigate('/usuario');
     };
 
+    // 🔹 Nuevo: función para manejar el botón de crear publicación
+    const manejarNuevaPublicacion = () => {
+        if (!isLoggedIn) {
+            alert('Debes iniciar sesión para crear una publicación.');
+            return; // ❌ no redirige
+        }
+        navigate('/new'); // ✅ solo si está logueado
+    };
+
     return (
         <>
             <div className='Perfil'>
@@ -97,11 +106,13 @@ function Inicio(props) {
                     <ul>
                         {admin && <p className='admin'>ADMIN</p>}
 
+                        {/* 🔹 Cambiado: antes era un <Link>, ahora es un <button> */}
                         <li>
-                            <Link className='New' to='/new'>
+                            <button className='boton' onClick={manejarNuevaPublicacion}>
                                 <img src={postLogo} className='Logo' alt='crear' />
-                            </Link>
+                            </button>
                         </li>
+
                         <li>
                             <button className='boton' onClick={toggleTheme}>
                                 {theme === 'light' ? (
@@ -111,6 +122,7 @@ function Inicio(props) {
                                 )}
                             </button>
                         </li>
+
                         <li>
                             <Link className='Buscador' to='/buscador'>
                                 {theme === 'light' ? (
@@ -146,7 +158,9 @@ function Inicio(props) {
                                     )}
                                 </h1>
                                 <h4>{publicacion.usuario}</h4>
-                                <Markdown remarkPlugins={[remarkGfm]}>{publicacion.contenido}</Markdown>
+                                <Markdown remarkPlugins={[remarkGfm]}>
+                                    {publicacion.contenido}
+                                </Markdown>
                                 <button className='boton' onClick={() => handleLike(publicacion.id)}>
                                     {userHasLiked ? (
                                         <img src={like1} className='like' alt='like' />
@@ -166,7 +180,6 @@ function Inicio(props) {
     );
 }
 
-// ------------------- COMPONENTE PRINCIPAL APP -------------------
 function App() {
     const [admin, setAdmin] = useState(false);
     const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
