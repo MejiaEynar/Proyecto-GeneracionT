@@ -16,6 +16,8 @@ import New from './New';
 import Login from './Login';
 import buscarBlack from './assets/buscar.png';
 import buscarWhite from './assets/buscar1.png';
+import iniciar1 from './assets/iniciar1.png';
+import iniciar2 from './assets/iniciar2.png';
 
 function Inicio(props) {
     const { admin, toggleTheme, theme, publicaciones, setPublicaciones, handleLike, isLoggedIn, currentUser, handleLogout } = props;
@@ -37,23 +39,30 @@ function Inicio(props) {
 
     return (
         <>
+
+           <div className='Perfil'>
+                           {isLoggedIn ? (
+                               <>
+                               <li>
+                                   <button onClick={handleLogout} className='boton'>
+                                       <Link className='Login' to='/login'>{theme === 'light' ?  <img src={iniciar2} className={"Logo"} alt={"iniciar2"} /> : <img src={iniciar1} className={"Logo"} alt={"iniciar1"} />}</Link>
+                                   </button>
+                              </li>
+                               </>
+                               ) : (
+                               <li><Link className='Login' to='/login'> </Link></li>
+                           )}
+                       </div>
             <div className={"Imagen"}>
+
                 <img src={Logo} className={"Logo"} alt={"Logo"} />
+
             </div>
-            <header className='SearchBar'>
+            <footer className='SearchBar'>
 
                 <nav>
                     <ul>
                         {admin && <p className='admin'>ADMIN</p>}
-
-                        {/* LÓGICA DE SESIÓN EN LA BARRA DE NAVEGACIÓN */}
-                        {isLoggedIn ? (
-                            <>
-                                <li><button onClick={handleLogout} className='logout-button'>Cerrar Sesión</button></li>
-                            </>
-                        ) : (
-                            <li><Link className='Login' to='/login'>Iniciar Sesión</Link></li>
-                        )}
 
                         <li><Link className='New' to='/new'> <img src={postLogo} className={"Logo"} alt={"modo oscuro"} /> </Link></li>
                         <li>
@@ -66,7 +75,7 @@ function Inicio(props) {
                     </ul>
                 </nav>
 
-            </header>
+            </footer>
             <main>
                 {publicaciones && publicaciones.length > 0 ? (
                     publicaciones.map((publicacion) => {

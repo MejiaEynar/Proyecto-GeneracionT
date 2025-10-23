@@ -3,6 +3,36 @@ body {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
+.Nav {
+  position: relative;              /* permite posicionar elementos dentro */
+  display: flex;
+  align-items: center;             /* centra verticalmente */
+  height: 60px;
+  background-color: inherit;       /* mantiene tu modo claro/oscuro */
+  border-bottom: 1px solid #333639;
+  padding: 0 15px;
+}
+
+.Perfil {
+  position: absolute;
+  left: 15px;                      /* fija el botón/enlace a la izquierda */
+  display: flex;
+  align-items: center;
+  list-style: none;
+}
+
+.Imagen {
+  flex: 1;                         /* toma todo el espacio central */
+  display: flex;
+  justify-content: center;         /* centra horizontalmente el logo */
+  align-items: center;             /* centra verticalmente */
+}
+
+.Logo {
+  width: 50px;
+  height: 50px;
+}
+
 
 .SearchBar {
   position: fixed; /* Hace que la barra se quede en la parte superior al hacer scroll */
@@ -59,15 +89,6 @@ body {
     color: #e91e63;  /* rosa cuando ya diste me gusta */
 }
 
-.Imagen {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.Logo {
-    width: 50px;
-    height: 50px;
-}
 .like {
     background-color: transparent;
     width: 20px;
