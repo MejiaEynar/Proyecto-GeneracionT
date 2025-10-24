@@ -145,7 +145,7 @@ function Inicio(props) {
 
                         return (
                             <div key={publicacion.id} className='publicacion'>
-                                    <h3>{publicacion.usuario}</h3>
+                                    <h2>{publicacion.usuario}</h2>
                                     {admin && (
                                         <button
                                             className='remove'
@@ -155,7 +155,9 @@ function Inicio(props) {
                                             X
                                         </button>
                                     )}
+                                <h3>
                                  <Link to={`/post/${publicacion.id}`}>{publicacion.titulo}</Link>
+                                 </h3>
                                 <Markdown remarkPlugins={[remarkGfm]}>
                                     {publicacion.contenido}
                                 </Markdown>
