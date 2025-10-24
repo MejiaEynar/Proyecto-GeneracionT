@@ -92,7 +92,28 @@ function Login({ theme, handleLogin }) {
                     </button>
                 </form>
             </div>
+            <div className="login-footer">
+                            <nav>
+                                <a href="#">Información</a>
+                                <a href="#">Centro de Ayuda</a>
+                                <a href="#">Condiciones de Servicio</a>
+                                <a href="#">Política de Privacidad</a>
+                                <a href="#">Política de cookies</a>
+                                <a href="#">Accesibilidad</a>
+                                <a href="#">Información de anuncios</a>
+                                <a href="#">Blog</a>
+                                <a href="#">Empleos</a>
+                                <a href="#">Recursos para marcas</a>
+                                <a href="#">Publicidad</a>
+                                <a href="#">Marketing</a>
+                                <a href="#">Desarrolladores</a>
+                                <a href="#">Guía</a>
+                                <a href="#">Configuración</a>
+                                <span>© 2025 BoludApp.</span>
+                            </nav>
+                        </div>
         </div>
+
     );
 }
 

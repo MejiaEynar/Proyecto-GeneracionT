@@ -23,10 +23,13 @@ body {
 
 /* Contenedor principal centrado */
 .login-container {
+    /* 💥 CAMBIO AQUÍ: Eliminamos el min-height: 100vh para permitir que crezca con el footer,
+       pero mantenemos el flex para centrar el .login-box. */
     display: flex;
-    justify-content: center;
+    flex-direction: column; /* Asegura que el footer vaya abajo */
+    justify-content: flex-start; /* Alinea el contenido al inicio */
     align-items: center;
-    min-height: 100vh;
+    min-height: 100vh; /* Se puede mantener para al menos ocupar la pantalla inicial */
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
@@ -36,7 +39,9 @@ body {
     text-align: left;
     max-width: 400px;
     width: 90%;
-    padding: 40px 30px;
+    /* 💥 CAMBIO AQUÍ: Reducimos el padding inferior a un valor más estándar
+       ya que el footer ya no es fijo. */
+    padding: 40px 30px 40px 30px;
 }
 
 /* === LOGO === */
@@ -144,14 +149,12 @@ body {
     background-color: #e7e7e7;
 }
 
-/* === ERRORES Y MENSAJES === */
 .error-new {
     color: red;
     font-weight: 500;
     margin-bottom: 15px;
 }
 
-/* === MODO OSCURO === */
 .dark .login-container {
     background-color: var(--background-color-dark);
     color: var(--text-color-dark);
@@ -179,4 +182,47 @@ body {
 .dark .btn-iniciar:hover,
 .dark .btn-enviar:hover {
     background-color: #243447;
+}
+
+.login-footer {
+
+    /* Estilos base (modo claro) */
+    width: 100%; /* Ocupa todo el ancho */
+    background-color: var(--background-color-light); /* Blanco por defecto */
+    padding: 10px 0;
+    text-align: center;
+    margin-top: 40px; /* Añade un margen superior para separarlo de la caja de login */
+}
+
+.login-footer nav {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.login-footer a,
+.login-footer span {
+    /* Color de texto en modo claro */
+    color: var(--text-color-light);
+    text-decoration: none;
+    font-size: 13px;
+    margin: 0 8px 5px 8px;
+    white-space: nowrap;
+}
+
+.login-footer a:hover {
+    color: var(--link-color); /* Usa el color de enlace de tus variables */
+    text-decoration: underline;
+}
+
+/* === ADAPTACIÓN MODO OSCURO PARA EL FOOTER === */
+.dark .login-footer {
+    background-color: var(--background-color-dark);
+}
+
+.dark .login-footer a,
+.dark .login-footer span {
+    color: var(--text-color-dark); /* Texto blanco grisáceo */
 }
