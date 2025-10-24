@@ -1,74 +1,62 @@
-/* Variables de color base (para mejor mantenimiento) */
 :root {
     --text-color-light: #000000;
     --background-color-light: #ffffff;
-    --primary-action-color: #000000; /* Botón Crear Cuenta */
+    --primary-action-color: #000000;
     --secondary-action-color: #ffffff;
     --border-color: #cfd9de;
     --link-color: #1d9bf0;
 
-    /* Colores del modo oscuro */
     --text-color-dark: #e7e9ea;
     --background-color-dark: #16202b;
     --box-background-dark: #16202b;
     --border-color-dark: #333639;
 }
 
-/* Cuerpo general */
 body {
     font-family: 'Arial', sans-serif;
     margin: 0;
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Contenedor principal centrado */
 .login-container {
-    /* 💥 CAMBIO AQUÍ: Eliminamos el min-height: 100vh para permitir que crezca con el footer,
-       pero mantenemos el flex para centrar el .login-box. */
     display: flex;
-    flex-direction: column; /* Asegura que el footer vaya abajo */
-    justify-content: flex-start; /* Alinea el contenido al inicio */
+    flex-direction: column;
+    justify-content: flex-start;
     align-items: center;
-    min-height: 100vh; /* Se puede mantener para al menos ocupar la pantalla inicial */
+    min-height: 100vh;
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Caja del login */
 .login-box {
     position: relative;
     text-align: left;
     max-width: 400px;
     width: 90%;
-    /* 💥 CAMBIO AQUÍ: Reducimos el padding inferior a un valor más estándar
-       ya que el footer ya no es fijo. */
     padding: 40px 30px 40px 30px;
 }
 
-/* === LOGO === */
 .login-logo {
     position: absolute;
-    left: -500px; /* Lo empuja a la izquierda del texto */
+    left: -500px;
     top: 50%;
     transform: translateY(-50%);
-    width: 500px; /* Tamaño aumentado */
+    width: 500px;
     height: auto;
 }
 
-/* === TÍTULOS === */
 .login-title {
-    font-size: 44px; /* Más grande */
+    font-size: 44px;
     font-weight: 900;
     margin-bottom: 20px;
     line-height: 1.2;
 }
 
 .login-subtitle {
-    font-size: 28px; /* Más grande */
+    font-size: 28px;
     font-weight: 700;
     margin-bottom: 30px;
 }
 
-/* === BOTONES === */
 .login-buttons {
     display: flex;
     flex-direction: column;
@@ -89,7 +77,6 @@ body {
     transition: background-color 0.2s, border-color 0.2s;
 }
 
-/* Crear cuenta */
 .btn-crear {
     background-color: var(--primary-action-color);
     color: var(--secondary-action-color);
@@ -99,7 +86,6 @@ body {
     background-color: #1a1a1a;
 }
 
-/* Iniciar sesión */
 .btn-iniciar {
     border: 1px solid var(--border-color);
     color: var(--primary-action-color);
@@ -109,14 +95,12 @@ body {
     background-color: #e7e7e7;
 }
 
-/* Separador */
 .login-divider {
     font-size: 14px;
     color: #657786;
     margin: 15px 0;
 }
 
-/* === FORMULARIO === */
 .login-form {
     margin-top: 30px;
     display: flex;
@@ -186,12 +170,30 @@ body {
 
 .login-footer {
 
-    /* Estilos base (modo claro) */
-    width: 100%; /* Ocupa todo el ancho */
-    background-color: var(--background-color-light); /* Blanco por defecto */
+    width: 100%;
+    background-color: var(--background-color-light);
     padding: 10px 0;
     text-align: center;
-    margin-top: 40px; /* Añade un margen superior para separarlo de la caja de login */
+    margin-top: 40px;
+}
+
+.terms-text {
+    font-size: 13px;
+    color: var(--text-color-light);
+    margin-top: -5px;
+    line-height: 1.3;
+}
+
+.terms-text a {
+    color: var(--link-color);
+    text-decoration: none;
+}
+
+.terms-text a:hover {
+    text-decoration: underline;
+}
+.dark .terms-text {
+    color: var(--text-color-dark);
 }
 
 .login-footer nav {
@@ -204,7 +206,6 @@ body {
 
 .login-footer a,
 .login-footer span {
-    /* Color de texto en modo claro */
     color: var(--text-color-light);
     text-decoration: none;
     font-size: 13px;
@@ -213,16 +214,15 @@ body {
 }
 
 .login-footer a:hover {
-    color: var(--link-color); /* Usa el color de enlace de tus variables */
+    color: var(--link-color);
     text-decoration: underline;
 }
 
-/* === ADAPTACIÓN MODO OSCURO PARA EL FOOTER === */
 .dark .login-footer {
     background-color: var(--background-color-dark);
 }
 
 .dark .login-footer a,
 .dark .login-footer span {
-    color: var(--text-color-dark); /* Texto blanco grisáceo */
+    color: var(--text-color-dark);
 }

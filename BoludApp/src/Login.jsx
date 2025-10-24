@@ -1,5 +1,3 @@
-// Archivo: Login.jsx
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Logo from "./assets/LdNR.png";
@@ -12,14 +10,12 @@ function Login({ theme, handleLogin }) {
     const [password, setPassword] = useState("");
     const [isRegister, setIsRegister] = useState(false);
 
-    // Guardar cuenta en localStorage
     const saveAccount = (user, pass) => {
         const accounts = JSON.parse(localStorage.getItem("accounts")) || {};
         accounts[user] = pass;
         localStorage.setItem("accounts", JSON.stringify(accounts));
     };
 
-    // Verificar si la cuenta existe
     const checkAccount = (user, pass) => {
         const accounts = JSON.parse(localStorage.getItem("accounts")) || {};
         return accounts[user] === pass;
@@ -34,7 +30,6 @@ function Login({ theme, handleLogin }) {
         }
 
         if (isRegister) {
-            // Crear nueva cuenta
             const accounts = JSON.parse(localStorage.getItem("accounts")) || {};
             if (accounts[username]) {
                 alert("Ese usuario ya existe. Intenta iniciar sesión.");
@@ -45,7 +40,6 @@ function Login({ theme, handleLogin }) {
             handleLogin(username);
             navigate("/");
         } else {
-            // Iniciar sesión
             if (checkAccount(username, password)) {
                 handleLogin(username);
                 navigate("/");
@@ -72,6 +66,9 @@ function Login({ theme, handleLogin }) {
                     <button onClick={() => setIsRegister(false)} className="btn-iniciar">
                         Iniciar sesión
                     </button>
+                     <p className="terms-text">
+                    Al registrarte, aceptas los <a href="#">Términos de servicio</a> y la <a href="#">Política de privacidad</a>, incluida la política de <a href="#">Uso de Cookies</a>.
+                    </p>
                 </div>
 
                 <form onSubmit={handleSubmit} className="login-form">
