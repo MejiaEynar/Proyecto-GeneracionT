@@ -12,6 +12,7 @@ import like from './assets/like.png';
 import like1 from './assets/like1.png';
 import postLogo from './assets/postLogo.png';
 import Buscador from './Buscador';
+import AdminDashboard from './AdminDashboard';
 import New from './New';
 import Login from './Login';
 import buscarBlack from './assets/buscar.png';
@@ -301,6 +302,27 @@ function App() {
     const toggleTheme = () => {
         setTheme((prev) => (prev === 'light' ? 'dark' : 'light'));
     };
+    // 🔹 Función centralizada para eliminar publicaciones (usada por el AdminDashboard)
+    const handleDeletePost = (id, deletedBy) => {
+        const publicacionesGuardadas = JSON.parse(localStorage.getItem('publicaciones')) || [];
+        const deletedPublicaciones = JSON.parse(localStorage.getItem('deletedPublicaciones')) || [];
+        const postToDelete = publicacionesGuardadas.find(p => p.id === id);
+
+        if (postToDelete) {
+            // 1. Registrar en lista de eliminadas (para métricas)
+            localStorage.setItem('deletedPublicaciones', JSON.stringify([
+                ...deletedPublicaciones,
+                { ...postToDelete, deletedBy, deletedAt: new Date().toISOString() }
+            ]));
+
+            // 2. Eliminar del array principal
+            const publicacionesActualizadas = publicacionesGuardadas.filter(p => p.id !== id);
+            setPublicaciones(publicacionesActualizadas);
+            localStorage.setItem('publicaciones', JSON.stringify(publicacionesActualizadas));
+            return true;
+        }
+        return false;
+    };
 
     // 6. Rutas
     return (
@@ -324,6 +346,21 @@ function App() {
             />
 
             <Route path='/login' element={<Login theme={theme} handleLogin={handleLogin} />} />
+            {/* RUTA PARA EL DASHBOARD DE ADMIN */}
+            <Route
+                path='/dashboard-admin'
+                element={
+                    admin ? (
+                        <AdminDashboard
+                            theme={theme}
+                            setAdmin={setAdmin}
+                            handleDeletePost={handleDeletePost}
+                        />
+                    ) : (
+                        <Admin setAdmin={setAdmin} theme={theme} />
+                    )
+                }
+            />
 
             <Route
                 path='/usuario'
@@ -382,9 +419,12 @@ function App() {
                         theme={theme}
                         publicaciones={publicaciones}
                         setPublicaciones={setPublicaciones}
-                        // Reemplazo de alert()
                         handleLike={isLoggedIn ? handleLike : () => console.log('Debes iniciar sesión para dar "Me gusta".')}
+                        handleDeletePost={handleDeletePost} // 👈 agregado
                     />
+                }
+            />
+
                 }
             />
         </Routes>

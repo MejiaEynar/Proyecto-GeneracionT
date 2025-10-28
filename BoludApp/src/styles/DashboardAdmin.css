@@ -1,0 +1,155 @@
+/* -------------------- Estilos Generales del Dashboard -------------------- */
+
+.admin-dashboard {
+    /* ... estilos existentes ... */
+    min-height: 100vh;
+    padding: 20px;
+    margin: 0 auto;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    color: var(--main-text-color, #0f1419);
+}
+
+/* -------------------- Sección de Métricas (KPIs) -------------------- */
+
+.dash-kpi-grid { /* CLASE MODIFICADA */
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 40px;
+}
+
+.dash-kpi-card { /* CLASE MODIFICADA */
+    background-color: var(--secondary-bg-color, #ffffff);
+    border: 1px solid var(--border-color, #cfd9de);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s;
+}
+
+.dash-kpi-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.dash-kpi-title { /* CLASE MODIFICADA */
+    font-size: 14px;
+    color: gray;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.dash-kpi-value { /* CLASE MODIFICADA */
+    font-size: 32px;
+    font-weight: bold;
+    color: var(--main-text-color, #0f1419);
+}
+
+/* -------------------- Sección de Usuarios/Tabla -------------------- */
+
+.dash-user-table-container { /* CLASE MODIFICADA */
+    background-color: var(--secondary-bg-color, #ffffff);
+    border: 1px solid var(--border-color, #cfd9de);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    overflow-x: auto;
+}
+
+.dash-table-title { /* CLASE AÑADIDA para el h2 */
+    font-size: 24px;
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+.dash-user-table { /* CLASE MODIFICADA */
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+.dash-user-table th, .dash-user-table td { /* CLASE MODIFICADA */
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color, #cfd9de);
+}
+
+.dash-user-table th { /* CLASE MODIFICADA */
+    background-color: #f7f9f9;
+    font-weight: bold;
+    color: #536471;
+    text-transform: uppercase;
+}
+
+.dash-user-table tbody tr:hover { /* CLASE MODIFICADA */
+    background-color: #f7f9f9;
+}
+
+/* -------------------- Botones de Acción en la Tabla -------------------- */
+
+.dash-action-button { /* CLASE MODIFICADA */
+    padding: 8px 12px;
+    margin-right: 8px;
+    border-radius: 20px;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    font-size: 13px;
+}
+
+.dash-btn-view { /* CLASE MODIFICADA */
+    background-color: #1da1f2;
+    color: #ffffff;
+}
+
+.dash-btn-view:hover { /* CLASE MODIFICADA */
+    background-color: #1a8cd8;
+}
+
+.dash-btn-delete { /* CLASE MODIFICADA */
+    background-color: #f44336;
+    color: #ffffff;
+}
+
+.dash-btn-delete:hover { /* CLASE MODIFICADA */
+    background-color: #d32f2f;
+}
+
+/* -------------------- Estilos Modo Oscuro -------------------- */
+
+.dark .dash-kpi-card, .dark .dash-user-table-container { /* CLASE MODIFICADA */
+    background-color: var(--box-background-dark, #16202b);
+    border-color: var(--border-color-dark, #333639);
+}
+
+.dark .dash-kpi-title { /* CLASE MODIFICADA */
+    color: #8899a6;
+}
+
+.dark .dash-user-table th { /* CLASE MODIFICADA */
+    background-color: #22303c;
+    color: #8899a6;
+}
+
+.dark .dash-user-table td { /* CLASE MODIFICADA */
+    border-color: var(--border-color-dark, #333639);
+}
+
+.dark .dash-user-table tbody tr:hover { /* CLASE MODIFICADA */
+    background-color: #22303c;
+}
+
+/* Responsividad (se actualizan las referencias a la tabla) */
+@media (max-width: 768px) {
+    .dash-user-table thead { /* CLASE MODIFICADA */
+        display: none;
+    }
+
+    .dash-user-table, .dash-user-table tbody, .dash-user-table tr, .dash-user-table td { /* CLASE MODIFICADA */
+        display: block;
+        width: 100%;
+    }
+}
