@@ -6,7 +6,7 @@ import inicioBlack from "./assets/inicioBlack.png";
 import inicioWhite from "./assets/inicioWhite.png";
 import like from './assets/like.png';
 import like1 from './assets/like1.png';
-import './styles/buscador.css'
+import './styles/Buscador.css'
 import buscarBlack from './assets/buscar.png';
 import buscarWhite from './assets/buscar1.png';
 import './styles/App.css';
