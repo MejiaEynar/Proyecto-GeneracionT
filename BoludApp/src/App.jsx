@@ -19,6 +19,7 @@ import buscarWhite from './assets/buscar1.png';
 import iniciar1 from './assets/iniciar1.png';
 import iniciar2 from './assets/iniciar2.png';
 import Usuario from './Usuario';
+import EditarPerfil from './EditarPerfil';
 
 // ------------------- COMPONENTE INICIO -------------------
 function Inicio(props) {
@@ -58,8 +59,10 @@ function Inicio(props) {
     // 🔹 Nuevo: función para manejar el botón de crear publicación
     const manejarNuevaPublicacion = () => {
         if (!isLoggedIn) {
-            alert('Debes iniciar sesión para crear una publicación.');
-            return; // ❌ no redirige
+            // Reemplazo de alert()
+            // En una aplicación real, usarías un modal o MessageBox
+            console.log('Debes iniciar sesión para crear una publicación.');
+            return;
         }
         navigate('/new'); // ✅ solo si está logueado
     };
@@ -145,19 +148,19 @@ function Inicio(props) {
 
                         return (
                             <div key={publicacion.id} className='publicacion'>
-                                    <h2>{publicacion.usuario}</h2>
-                                    {admin && (
-                                        <button
-                                            className='remove'
-                                            id={publicacion.id}
-                                            onClick={() => borrarPublicacion(publicacion.id)}
-                                        >
-                                            X
-                                        </button>
-                                    )}
+                                <h2>{publicacion.usuario}</h2>
+                                {admin && (
+                                    <button
+                                        className='remove'
+                                        id={publicacion.id}
+                                        onClick={() => borrarPublicacion(publicacion.id)}
+                                    >
+                                        X
+                                    </button>
+                                )}
                                 <h3>
-                                 <Link to={`/post/${publicacion.id}`}>{publicacion.titulo}</Link>
-                                 </h3>
+                                    <Link to={`/post/${publicacion.id}`}>{publicacion.titulo}</Link>
+                                </h3>
                                 <Markdown remarkPlugins={[remarkGfm]}>
                                     {publicacion.contenido}
                                 </Markdown>
@@ -192,8 +195,19 @@ function App() {
         return localStorage.getItem('currentUser') || '';
     });
 
+    // 🆕 Estado para guardar datos de todos los usuarios (bio, name, joined, etc.)
+    const [usersData, setUsersData] = useState(() => {
+        return JSON.parse(localStorage.getItem('usersData')) || {};
+    });
+
     const navigate = useNavigate();
 
+    // 🔄 Sincronizar usersData con localStorage
+    useEffect(() => {
+        localStorage.setItem('usersData', JSON.stringify(usersData));
+    }, [usersData]);
+
+    // 1. Inicialización de publicaciones (MANTENIDO)
     useEffect(() => {
         let publicacionesGuardadas = JSON.parse(localStorage.getItem('publicaciones')) || [];
 
@@ -207,24 +221,54 @@ function App() {
         setPublicaciones(publicacionesGuardadas);
     }, []);
 
+    // 2. Lógica de Login (CONSOLIDADA y CORREGIDA)
     const handleLogin = (username) => {
         setIsLoggedIn(true);
         setCurrentUser(username);
         localStorage.setItem('isLoggedIn', JSON.stringify(true));
         localStorage.setItem('currentUser', username);
 
-        navigate('/usuario'); // 👉 redirige automáticamente al perfil
+        // ✅ Al iniciar sesión, inicializar datos si es la primera vez (para la fecha de registro)
+        if (!usersData[username]) {
+            const defaultData = {
+                name: username,
+                username: `@${username.toLowerCase()}`,
+                bio: "",
+                // 📅 FECHA ACTUAL DE INICIO DE SESIÓN
+                joined: new Date().toLocaleDateString('es-ES', { year: 'numeric', month: 'long' }),
+                following: 0,
+                followers: 0,
+                banner: "https://pbs.twimg.com/profile_banners/44196397/1576183471/1500x500",
+                avatar: "https://abs.twimg.com/sticky/default_profile_images/default_profile_400x400.png",
+            };
+            setUsersData(prev => ({ ...prev, [username]: defaultData }));
+        }
+
+        navigate('/usuario');
     };
 
+    // 3. Lógica de Logout (CONSOLIDADA)
     const handleLogout = () => {
         setIsLoggedIn(false);
         setCurrentUser('');
         setAdmin(false);
         localStorage.removeItem('isLoggedIn');
         localStorage.removeItem('currentUser');
-        navigate('/'); // vuelve al inicio
+        navigate('/');
     };
 
+    // 🆕 Función para actualizar el perfil de usuario
+    const handleEditProfile = (username, newFields) => {
+        setUsersData(prev => ({
+            ...prev,
+            [username]: {
+                ...prev[username],
+                ...newFields, // Sobrescribe name, bio, banner, avatar
+            }
+        }));
+    };
+
+    // 4. Lógica de Like (MANTENIDA)
     const handleLike = (id) => {
         if (!isLoggedIn || !currentUser) return;
 
@@ -249,6 +293,7 @@ function App() {
         localStorage.setItem('publicaciones', JSON.stringify(updatedPublicaciones));
     };
 
+    // 5. Lógica del Tema (MANTENIDA)
     useEffect(() => {
         localStorage.setItem('theme', theme);
     }, [theme]);
@@ -257,6 +302,7 @@ function App() {
         setTheme((prev) => (prev === 'light' ? 'dark' : 'light'));
     };
 
+    // 6. Rutas
     return (
         <Routes>
             <Route
@@ -268,7 +314,8 @@ function App() {
                         theme={theme}
                         publicaciones={publicaciones}
                         setPublicaciones={setPublicaciones}
-                        handleLike={isLoggedIn ? handleLike : () => alert('Debes iniciar sesión para dar "Me gusta".')}
+                        // Reemplazo de alert()
+                        handleLike={isLoggedIn ? handleLike : () => console.log('Debes iniciar sesión para dar "Me gusta".')}
                         isLoggedIn={isLoggedIn}
                         currentUser={currentUser}
                         handleLogout={handleLogout}
@@ -280,7 +327,28 @@ function App() {
 
             <Route
                 path='/usuario'
-                element={<Usuario isLoggedIn={isLoggedIn} currentUser={currentUser} theme={theme} />}
+                element={
+                    <Usuario
+                        isLoggedIn={isLoggedIn}
+                        currentUser={currentUser}
+                        theme={theme}
+                        usersData={usersData} // 🆕 Pasar los datos globales
+                    />
+                }
+            />
+
+            {/* 🆕 NUEVA RUTA DE EDICIÓN DE PERFIL */}
+            <Route
+                path='/editar-perfil'
+                element={
+                    <EditarPerfil
+                        theme={theme}
+                        currentUser={currentUser}
+                        usersData={usersData}
+                        handleEditProfile={handleEditProfile} // Función para guardar cambios
+                        isLoggedIn={isLoggedIn}
+                    />
+                }
             />
 
             <Route
@@ -295,11 +363,8 @@ function App() {
                         theme={theme}
                         publicaciones={publicaciones}
                         setPublicaciones={setPublicaciones}
-                        handleLike={
-                            isLoggedIn
-                                ? handleLike
-                                : () => alert('Debes iniciar sesión para dar "Me gusta" a la publicación.')
-                        }
+                        // Reemplazo de alert()
+                        handleLike={isLoggedIn ? handleLike : () => console.log('Debes iniciar sesión para dar "Me gusta" a la publicación.')}
                         isLoggedIn={isLoggedIn}
                         currentUser={currentUser}
                     />
@@ -317,7 +382,8 @@ function App() {
                         theme={theme}
                         publicaciones={publicaciones}
                         setPublicaciones={setPublicaciones}
-                        handleLike={isLoggedIn ? handleLike : () => alert('Debes iniciar sesión para dar "Me gusta".')}
+                        // Reemplazo de alert()
+                        handleLike={isLoggedIn ? handleLike : () => console.log('Debes iniciar sesión para dar "Me gusta".')}
                     />
                 }
             />
