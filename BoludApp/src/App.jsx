@@ -67,7 +67,23 @@ function Inicio(props) {
         }
         navigate('/new'); // ✅ solo si está logueado
     };
-
+    const loadAllUsersData = () => {
+        const accounts = JSON.parse(localStorage.getItem("accounts")) || {};
+        const defaultUsersData = {};
+        Object.keys(accounts).forEach(username => {
+            defaultUsersData[username] = {
+                name: username,
+                username: `@${username.toLowerCase()}`,
+                bio: "",
+                joined: "Fecha Desconocida", // Considera guardar esta fecha en Login.jsx
+                following: 0,
+                followers: 0,
+                banner: "URL_POR_DEFECTO",
+                avatar: "URL_POR_DEFECTO",
+            };
+        });
+        return defaultUsersData;
+    };
     return (
         <>
             <div className='Perfil'>
@@ -369,7 +385,21 @@ function App() {
                         isLoggedIn={isLoggedIn}
                         currentUser={currentUser}
                         theme={theme}
-                        usersData={usersData} // 🆕 Pasar los datos globales
+                        usersData={usersData}// <<--- PASAR LOS DATOS DE TODOS LOS USUARIOS
+                        admin={admin}// 🆕 Pasar los datos globales
+                    />
+                }
+            />
+            <Route
+                path='/usuario/:username'
+                element={
+                    <Usuario
+                        isLoggedIn={isLoggedIn}
+                        currentUser={currentUser}
+                        theme={theme}
+                        usersData={usersData}
+                        admin={admin}
+                        publicaciones={publicaciones}
                     />
                 }
             />
@@ -424,8 +454,6 @@ function App() {
                     />
                 }
             />
-
-                }
             />
         </Routes>
     );

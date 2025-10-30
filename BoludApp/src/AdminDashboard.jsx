@@ -4,88 +4,107 @@ import './styles/DashboardAdmin.css';
 import './styles/Buscador.css';
 import './styles/App.css';
 
-function AdminDashboard ({ theme, setAdmin, handleDeletePost }) {
+function AdminDashboard({ theme, setAdmin }) {
     const navigate = useNavigate();
 
-    // 1. Declaración de Estados (La parte que faltaba)
+    // === ESTADOS ===
     const [metrics, setMetrics] = useState({
         totalTwits: 0,
         totalAccounts: 0,
         deletedTwits: 0,
         deletedAccounts: 0,
     });
-    const [users, setUsers] = useState([]);
-    const [searchTerm, setSearchTerm] = useState('');
 
-    // 2. Función de Carga de Datos (Incluida en la lógica anterior)
+    const [users, setUsers] = useState([]);
+    const [twits, setTwits] = useState([]);
+    const [searchUser, setSearchUser] = useState('');
+    const [searchTwit, setSearchTwit] = useState('');
+
+    // === CARGA DE DATOS ===
     const loadData = useCallback(() => {
-        // --- Cargar Cuentas ---
+        // --- Cargar cuentas ---
         const storedAccounts = JSON.parse(localStorage.getItem('accounts')) || {};
         const allAccounts = Object.keys(storedAccounts).map(username => ({
             username: username,
             id: username,
             email: `${username}@boludapp.com`,
         }));
-
         const deletedAccounts = JSON.parse(localStorage.getItem('deletedAccounts')) || [];
 
-        // --- Cargar Publicaciones ---
+        // --- Cargar publicaciones ---
         const publicaciones = JSON.parse(localStorage.getItem('publicaciones')) || [];
         const deletedPublicaciones = JSON.parse(localStorage.getItem('deletedPublicaciones')) || [];
 
-        // --- Actualizar Estados ---
         setMetrics({
             totalTwits: publicaciones.length,
             totalAccounts: allAccounts.length,
             deletedTwits: deletedPublicaciones.length,
             deletedAccounts: deletedAccounts.length,
         });
-        setUsers(allAccounts);
 
+        setUsers(allAccounts);
+        setTwits(publicaciones);
     }, []);
 
-    // 3. Efecto para Cargar Datos al inicio
     useEffect(() => {
         loadData();
     }, [loadData]);
 
-    // 4. Lógica de Navegación y Eliminación (Incluida en la lógica anterior)
-    const handleViewUser = (username) => {
-        navigate(`/usuario/${username}`);
-    };
+    // === ACCIONES USUARIOS ===
+    const handleViewUser = (username) => navigate(`/usuario/${username}`);
 
     const handleDeleteAccount = (username) => {
-        if (window.confirm(`¿Estás seguro de que quieres eliminar la cuenta de @${username}?`)) {
-            // Eliminar cuenta del almacenamiento principal
+        if (window.confirm(`¿Eliminar la cuenta de @${username}?`)) {
             const storedAccounts = JSON.parse(localStorage.getItem('accounts')) || {};
             delete storedAccounts[username];
             localStorage.setItem('accounts', JSON.stringify(storedAccounts));
 
-            // Añadir cuenta a la lista de eliminados
             const deletedAccounts = JSON.parse(localStorage.getItem('deletedAccounts')) || [];
             deletedAccounts.push(username);
             localStorage.setItem('deletedAccounts', JSON.stringify(deletedAccounts));
 
-            // Recargar datos y forzar un logout (si es el admin quien se elimina)
             loadData();
-            alert(`La cuenta de @${username} ha sido eliminada permanentemente.`);
+            alert(`La cuenta de @${username} ha sido eliminada.`);
         }
     };
 
-    // 5. Lógica de Filtrado (Incluida en la lógica anterior)
+    // === ACCIONES TWITS ===
+    const handleRevisarTwit = (id) => navigate(`/post/${id}`);
+
+    const handleDeleteTwit = (id) => {
+        if (window.confirm('¿Eliminar este twit?')) {
+            const publicaciones = JSON.parse(localStorage.getItem('publicaciones')) || [];
+            const updated = publicaciones.filter((p) => p.id !== id);
+            localStorage.setItem('publicaciones', JSON.stringify(updated));
+
+            const deletedPublicaciones = JSON.parse(localStorage.getItem('deletedPublicaciones')) || [];
+            const eliminado = publicaciones.find(p => p.id === id);
+            if (eliminado) deletedPublicaciones.push(eliminado);
+            localStorage.setItem('deletedPublicaciones', JSON.stringify(deletedPublicaciones));
+
+            loadData();
+            alert('El twit ha sido eliminado correctamente.');
+        }
+    };
+
+    // === FILTROS ===
     const filteredUsers = users.filter(user =>
-        user.username.toLowerCase().includes(searchTerm.toLowerCase())
+        user.username.toLowerCase().includes(searchUser.toLowerCase())
     );
 
+    const filteredTwits = twits.filter(t =>
+        t.usuario.toLowerCase().includes(searchTwit.toLowerCase()) ||
+        t.contenido.toLowerCase().includes(searchTwit.toLowerCase())
+    );
+
+    // === RENDER ===
     return (
         <div className={`admin-dashboard ${theme}`}>
-            {/* ... Encabezado (sin cambios) ... */}
-
-            {/* KPI Grid */}
+            {/* === MÉTRICAS === */}
             <div className='dash-kpi-grid'>
                 <div className='dash-kpi-card'>
                     <div className='dash-kpi-title'>Total de Twits</div>
-                    <div className='dash-kpi-value'>{metrics.totalTwits}</div> {/* ¡Ahora existe! */}
+                    <div className='dash-kpi-value'>{metrics.totalTwits}</div>
                 </div>
                 <div className='dash-kpi-card'>
                     <div className='dash-kpi-title'>Cuentas Activas</div>
@@ -101,66 +120,112 @@ function AdminDashboard ({ theme, setAdmin, handleDeletePost }) {
                 </div>
             </div>
 
-            {/* User Account Management */}
+            {/* === GESTIÓN DE USUARIOS === */}
             <div className='dash-user-table-container'>
                 <h2 className='dash-table-title'>Gestión de Cuentas de Usuario</h2>
-
-                {/* Search Input (usa clases de Buscador.css) */}
                 <div className='user-search search-form-flex'>
                     <input
                         type="text"
                         placeholder="Buscar por nombre de usuario..."
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
+                        value={searchUser}
+                        onChange={(e) => setSearchUser(e.target.value)}
                         className='search-input'
                     />
                 </div>
 
-                {/* Users Table */}
-                <div style={{ marginTop: '20px' }}>
-                    <table className='dash-user-table'>
-                        <thead>
-                            <tr>
-                                <th>Usuario</th>
-                                <th>ID</th>
-                                <th>Email</th>
-                                <th>Acciones</th>
+                <table className='dash-user-table'>
+                    <thead>
+                    <tr>
+                        <th>Usuario</th>
+                        <th>ID</th>
+                        <th>Email</th>
+                        <th>Acciones</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {filteredUsers.length > 0 ? (
+                        filteredUsers.map((user) => (
+                            <tr key={user.id}>
+                                <td>{user.username}</td>
+                                <td>{user.id}</td>
+                                <td>{user.email}</td>
+                                <td>
+                                    <button
+                                        className='dash-action-button dash-btn-view'
+                                        onClick={() => handleViewUser(user.username)}
+                                    >
+                                        Revisar
+                                    </button>
+                                    <button
+                                        className='dash-action-button dash-btn-delete'
+                                        onClick={() => handleDeleteAccount(user.username)}
+                                    >
+                                        Eliminar
+                                    </button>
+                                </td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            {/* ... mapeo de usuarios ... */}
-                            {filteredUsers.length > 0 ? (
-                                filteredUsers.map((user) => (
-                                    <tr key={user.id}>
-                                        <td data-label="Usuario">{user.username}</td>
-                                        <td data-label="ID">{user.id}</td>
-                                        <td data-label="Email">{user.email}</td>
-                                        <td data-label="Acciones">
-                                            <button
-                                                className='dash-action-button dash-btn-view'
-                                                onClick={() => handleViewUser(user.username)}
-                                            >
-                                                Revisar
-                                            </button>
-                                            <button
-                                                className='dash-action-button dash-btn-delete'
-                                                onClick={() => handleDeleteAccount(user.username)}
-                                            >
-                                                Eliminar
-                                            </button>
-                                        </td>
-                                    </tr>
-                                ))
-                            ) : (
-                                <tr>
-                                    <td colSpan="4" style={{ textAlign: 'center', padding: '20px' }}>
-                                        No se encontraron usuarios que coincidan con la búsqueda.
-                                    </td>
-                                </tr>
-                            )}
-                        </tbody>
-                    </table>
+                        ))
+                    ) : (
+                        <tr>
+                            <td colSpan="4" style={{ textAlign: 'center' }}>No se encontraron usuarios.</td>
+                        </tr>
+                    )}
+                    </tbody>
+                </table>
+            </div>
+
+            {/* === GESTIÓN DE TWITS === */}
+            <div className='dash-user-table-container'>
+                <h2 className='dash-table-title'>Gestión de Twits</h2>
+                <div className='user-search search-form-flex'>
+                    <input
+                        type="text"
+                        placeholder="Buscar por usuario o contenido..."
+                        value={searchTwit}
+                        onChange={(e) => setSearchTwit(e.target.value)}
+                        className='search-input'
+                    />
                 </div>
+
+                <table className='dash-user-table'>
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Usuario</th>
+                        <th>Contenido</th>
+                        <th>Acciones</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {filteredTwits.length > 0 ? (
+                        filteredTwits.map((t) => (
+                            <tr key={t.id}>
+                                <td>{t.id}</td>
+                                <td>{t.usuario}</td>
+                                <td className="contenido-celda">{t.contenido}</td>
+                                <td>
+                                    <button
+                                        className='dash-action-button dash-btn-view'
+                                        onClick={() => handleRevisarTwit(t.id)}
+                                    >
+                                        Revisar
+                                    </button>
+                                    <button
+                                        className='dash-action-button dash-btn-delete'
+                                        onClick={() => handleDeleteTwit(t.id)}
+                                    >
+                                        Eliminar
+                                    </button>
+                                </td>
+                            </tr>
+                        ))
+                    ) : (
+                        <tr>
+                            <td colSpan="4" style={{ textAlign: 'center' }}>No hay twits registrados.</td>
+                        </tr>
+                    )}
+                    </tbody>
+                </table>
             </div>
         </div>
     );

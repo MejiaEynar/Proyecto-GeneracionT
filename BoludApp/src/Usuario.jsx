@@ -1,9 +1,11 @@
 import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import "./styles/Usuario.css";
 
 function Usuario({ isLoggedIn, currentUser, theme, usersData, handleEditProfile }) {
     const navigate = useNavigate();
+    const { username: urlUsername } = useParams(); // 👈 Captura el nombre desde la URL (para admin)
+    const userToShow = urlUsername || currentUser; // 👈 Si hay username en la URL, lo usa; sino, el del usuario actual
 
     // Redirección si no hay sesión
     useEffect(() => {
@@ -14,19 +16,41 @@ function Usuario({ isLoggedIn, currentUser, theme, usersData, handleEditProfile 
 
     if (!isLoggedIn) return null;
 
-    // Obtener los datos del usuario actual desde el estado global (App.jsx)
-    const userData = usersData[currentUser] || {
-        name: currentUser,
-        username: `@${currentUser.toLowerCase()}`,
-        bio: "Parece que no tienes biografía. ¡Edita tu perfil!",
-        joined: "Fecha Desconocida", // Será actualizado por App.jsx
-        following: 0,
-        followers: 0,
-        banner:
-            "https://pbs.twimg.com/profile_banners/44196397/1576183471/1500x500",
-        avatar:
-            "https://abs.twimg.com/sticky/default_profile_images/default_profile_400x400.png",
-    };
+    // ✅ Obtener datos del usuario desde usersData o accounts
+    let userData = usersData[userToShow];
+
+    if (!userData) {
+        const allAccounts = JSON.parse(localStorage.getItem("accounts")) || {};
+        if (allAccounts[userToShow]) {
+            // Crear datos por defecto si el usuario existe pero no tiene datos cargados
+            userData = {
+                name: userToShow,
+                username: `@${userToShow.toLowerCase()}`,
+                bio: "",
+                joined: "Fecha Desconocida",
+                following: 0,
+                followers: 0,
+                banner:
+                    "https://pbs.twimg.com/profile_banners/44196397/1576183471/1500x500",
+                avatar:
+                    "https://abs.twimg.com/sticky/default_profile_images/default_profile_400x400.png",
+            };
+        } else {
+            // Si el usuario no existe en absoluto
+            userData = {
+                name: "Usuario no encontrado",
+                username: "@desconocido",
+                bio: "Este usuario no existe o fue eliminado.",
+                joined: "Desconocido",
+                following: 0,
+                followers: 0,
+                banner:
+                    "https://pbs.twimg.com/profile_banners/44196397/1576183471/1500x500",
+                avatar:
+                    "https://abs.twimg.com/sticky/default_profile_images/default_profile_400x400.png",
+            };
+        }
+    }
 
     const handleEditClick = () => {
         navigate("/editar-perfil");
@@ -44,16 +68,17 @@ function Usuario({ isLoggedIn, currentUser, theme, usersData, handleEditProfile 
                 </div>
 
                 <div className="usuario-actions">
-                    {/* Al hacer clic, navega a la ruta de edición */}
-                    <button className="edit-profile" onClick={handleEditClick}>Editar perfil</button>
+                    {/* Botón de editar perfil solo si es el usuario actual */}
+                    {userToShow === currentUser && (
+                        <button className="edit-profile" onClick={handleEditClick}>
+                            Editar perfil
+                        </button>
+                    )}
                 </div>
 
                 <h2>{userData.name}</h2>
                 <p className="usuario-username">{userData.username}</p>
-                {/* Muestra la bio, usando un texto por defecto si está vacía */}
                 <p className="usuario-bio">{userData.bio || "Sin biografía"}</p>
-
-                {/* Muestra la fecha de registro del usuario */}
                 <p className="usuario-joined">📅 Se unió en {userData.joined}</p>
 
                 <div className="usuario-follow">
