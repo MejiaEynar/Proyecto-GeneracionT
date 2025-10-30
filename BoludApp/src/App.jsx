@@ -378,6 +378,7 @@ function App() {
                         theme={theme}
                         usersData={usersData}// <<--- PASAR LOS DATOS DE TODOS LOS USUARIOS
                         admin={admin}// 🆕 Pasar los datos globales
+                        publicaciones={publicaciones}
                     />
                 }
             />

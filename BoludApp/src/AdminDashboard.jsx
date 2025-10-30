@@ -102,7 +102,7 @@ function AdminDashboard({ theme, setAdmin }) {
     // === RENDER ===
     return (
 
-        <div className={`admin-dashboard ${theme}`}>
+        <div className={`App ${theme}`}>
             <header className='Nav-comentar'>
                 <ul>
                     <li>

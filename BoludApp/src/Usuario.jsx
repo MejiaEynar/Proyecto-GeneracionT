@@ -3,6 +3,8 @@ import { useNavigate, useParams, Link } from "react-router-dom";
 import "./styles/Usuario.css";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import inicioBlack from "./assets/inicioBlack.png";
+import inicioWhite from "./assets/inicioWhite.png";
 
 function Usuario({
                      isLoggedIn,
@@ -69,6 +71,14 @@ function Usuario({
     );
 
     return (
+        <>
+            <header className='Nav-comentar'>
+                <ul>
+                    <li>
+                        <Link className="inicio" to="/">{theme === 'light' ?  <img src={inicioBlack} className={"Logo"} alt={"modo claro"} /> : <img src={inicioWhite} className={"Logo"} alt={"modo oscuro"}/>}</Link>
+                    </li>
+                </ul>
+            </header>
         <div className={`usuario-container ${theme}`}>
             <div className="usuario-banner">
                 <img src={userData.banner} alt="banner" />
@@ -125,6 +135,7 @@ function Usuario({
                 )}
             </div>
         </div>
+        </>
     );
 }
 
