@@ -8,3 +8,5 @@
 
 - Estado Actual del Proyecto: Finalizado.
 
+### Trello:
+- https://trello.com/b/83hcRHqf/proyecto-generaciont-boludapp
