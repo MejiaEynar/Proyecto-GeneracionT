@@ -90,6 +90,14 @@ body {
     color: #e91e63;  /* rosa cuando ya diste me gusta */
 }
 
+.light .boton {
+  color: #0f1419;
+}
+
+.dark .boton {
+  color: white;
+}
+
 .like {
     background-color: transparent;
     width: 20px;

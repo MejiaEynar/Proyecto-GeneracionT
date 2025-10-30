@@ -133,3 +133,90 @@
 .usuario-container.dark .usuario-posts {
     border-top-color: #38444d;
 }
+.usuario-posts {
+    margin-top: 30px;
+    border-top: 1px solid var(--border-color, #cfd9de);
+    padding-top: 15px;
+}
+
+.usuario-posts h3 {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: inherit;
+    border-bottom: 1px solid var(--border-color, #cfd9de);
+    padding-bottom: 8px;
+}
+
+.usuario-post {
+    background-color: var(--secondary-bg-color, #ffffff);
+    border: 1px solid var(--border-color, #e7e9ea);
+    border-radius: 12px;
+    padding: 15px 18px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    transition: transform 0.2s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+    cursor: pointer;
+    color: inherit;
+}
+
+.usuario-post:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.usuario-post h4 {
+    font-size: 18px;
+    margin: 0 0 10px;
+}
+
+.usuario-post h4 a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.usuario-post h4 a:hover {
+    color: #1d9bf0;
+    text-decoration: underline;
+}
+
+.usuario-post p {
+    font-size: 15px;
+    line-height: 1.5;
+    margin-bottom: 10px;
+}
+
+.usuario-post-date {
+    font-size: 13px;
+    color: #536471;
+    text-align: right;
+}
+
+/* -------------------- Modo oscuro -------------------- */
+.dark .usuario-post {
+    background-color: #1d2733;
+    border-color: #333639;
+    box-shadow: 0 2px 6px rgba(255,255,255,0.05);
+}
+
+.dark .usuario-post:hover {
+    background-color: #22303c;
+    box-shadow: 0 4px 12px rgba(255,255,255,0.1);
+}
+
+.dark .usuario-post-date {
+    color: #8899a6;
+}
+
+.light .usuario-post-date {
+    color: #657786;
+}
+
+/* -------------------- Mensaje sin publicaciones -------------------- */
+.sin-posts {
+    text-align: center;
+    font-style: italic;
+    color: gray;
+    margin-top: 20px;
+    font-size: 15px;
+}

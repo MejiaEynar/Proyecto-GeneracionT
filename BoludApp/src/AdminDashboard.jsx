@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import './styles/DashboardAdmin.css';
 import './styles/Buscador.css';
 import './styles/App.css';
+import inicioBlack from "./assets/inicioBlack.png";
+import inicioWhite from "./assets/inicioWhite.png";
 
 function AdminDashboard({ theme, setAdmin }) {
     const navigate = useNavigate();
@@ -99,7 +101,15 @@ function AdminDashboard({ theme, setAdmin }) {
 
     // === RENDER ===
     return (
+
         <div className={`admin-dashboard ${theme}`}>
+            <header className='Nav-comentar'>
+                <ul>
+                    <li>
+                        <Link className="inicio" to="/">{theme === 'light' ?  <img src={inicioBlack} className={"Logo"} alt={"modo claro"} /> : <img src={inicioWhite} className={"Logo"} alt={"modo oscuro"}/>}</Link>
+                    </li>
+                </ul>
+            </header>
             {/* === MÉTRICAS === */}
             <div className='dash-kpi-grid'>
                 <div className='dash-kpi-card'>
@@ -228,6 +238,7 @@ function AdminDashboard({ theme, setAdmin }) {
                 </table>
             </div>
         </div>
+
     );
 }
 

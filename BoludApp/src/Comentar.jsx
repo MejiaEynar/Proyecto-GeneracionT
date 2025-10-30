@@ -115,7 +115,7 @@ function Comentar(props) {
                 <section>
                     {publicacion ? (
                         <div key={publicacion.id} className="publicacion">
-                            <h4>{publicacion.usuario}</h4>
+                            <h4><Link to={`/usuario/${publicacion.usuario}`}>{publicacion.usuario}</Link></h4>
                             <h3>{publicacion.titulo}</h3>
                             <Markdown remarkPlugins={[remarkGfm]}>{publicacion.contenido}</Markdown>
                             {/* CORRECCIÓN 2: Se usa la nueva lógica likedBy */}

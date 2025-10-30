@@ -1,28 +1,36 @@
 import React, { useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, Link } from "react-router-dom";
 import "./styles/Usuario.css";
+import Markdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
-function Usuario({ isLoggedIn, currentUser, theme, usersData, handleEditProfile }) {
+function Usuario({
+                     isLoggedIn,
+                     currentUser,
+                     theme,
+                     usersData,
+                     publicaciones = [], // 👈 agregado: lista de publicaciones globales
+                     handleEditProfile,
+                 }) {
     const navigate = useNavigate();
-    const { username: urlUsername } = useParams(); // 👈 Captura el nombre desde la URL (para admin)
-    const userToShow = urlUsername || currentUser; // 👈 Si hay username en la URL, lo usa; sino, el del usuario actual
+    const { username: urlUsername } = useParams(); // Captura el nombre desde la URL
+    const userToShow = urlUsername || currentUser;
 
-    // Redirección si no hay sesión
+    // Redirección si no hay sesión y no se está viendo otro perfil
     useEffect(() => {
-        if (!isLoggedIn) {
+        if (!urlUsername && !isLoggedIn) {
             navigate("/login");
         }
-    }, [isLoggedIn, navigate]);
+    }, [isLoggedIn, navigate, urlUsername]);
 
-    if (!isLoggedIn) return null;
+    if (!urlUsername && !isLoggedIn) return null;
 
-    // ✅ Obtener datos del usuario desde usersData o accounts
+    // Obtener datos del usuario desde usersData o localStorage
     let userData = usersData[userToShow];
 
     if (!userData) {
         const allAccounts = JSON.parse(localStorage.getItem("accounts")) || {};
         if (allAccounts[userToShow]) {
-            // Crear datos por defecto si el usuario existe pero no tiene datos cargados
             userData = {
                 name: userToShow,
                 username: `@${userToShow.toLowerCase()}`,
@@ -36,7 +44,6 @@ function Usuario({ isLoggedIn, currentUser, theme, usersData, handleEditProfile 
                     "https://abs.twimg.com/sticky/default_profile_images/default_profile_400x400.png",
             };
         } else {
-            // Si el usuario no existe en absoluto
             userData = {
                 name: "Usuario no encontrado",
                 username: "@desconocido",
@@ -56,6 +63,11 @@ function Usuario({ isLoggedIn, currentUser, theme, usersData, handleEditProfile 
         navigate("/editar-perfil");
     };
 
+    // 🔹 Filtrar publicaciones del usuario
+    const publicacionesUsuario = publicaciones.filter(
+        (post) => post.usuario === userToShow
+    );
+
     return (
         <div className={`usuario-container ${theme}`}>
             <div className="usuario-banner">
@@ -68,7 +80,6 @@ function Usuario({ isLoggedIn, currentUser, theme, usersData, handleEditProfile 
                 </div>
 
                 <div className="usuario-actions">
-                    {/* Botón de editar perfil solo si es el usuario actual */}
                     {userToShow === currentUser && (
                         <button className="edit-profile" onClick={handleEditClick}>
                             Editar perfil
@@ -82,18 +93,36 @@ function Usuario({ isLoggedIn, currentUser, theme, usersData, handleEditProfile 
                 <p className="usuario-joined">📅 Se unió en {userData.joined}</p>
 
                 <div className="usuario-follow">
-          <span>
-            <strong>{userData.following}</strong> Siguiendo
-          </span>
                     <span>
-            <strong>{userData.followers}</strong> Seguidores
-          </span>
+                        <strong>{userData.following}</strong> Siguiendo
+                    </span>
+                    <span>
+                        <strong>{userData.followers}</strong> Seguidores
+                    </span>
                 </div>
             </div>
 
             <div className="usuario-posts">
                 <h3>Publicaciones</h3>
-                <p className="sin-posts">Aún no has publicado nada.</p>
+
+                {publicacionesUsuario.length > 0 ? (
+                    publicacionesUsuario.map((post) => (
+                        <div key={post.id} className="usuario-post">
+                            <h4>
+                                <Link to={`/post/${post.id}`}>{post.titulo}</Link>
+                            </h4>
+                            <Markdown remarkPlugins={[remarkGfm]}>
+                                {post.contenido}
+                            </Markdown>
+                        </div>
+                    ))
+                ) : (
+                    <p className="sin-posts">
+                        {userToShow === currentUser
+                            ? "Aún no has publicado nada."
+                            : "Este usuario aún no tiene publicaciones."}
+                    </p>
+                )}
             </div>
         </div>
     );

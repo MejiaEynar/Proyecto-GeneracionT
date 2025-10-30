@@ -88,8 +88,6 @@ function Buscador(props) {
                                     <Link to={`/post/${publicacion.id}`}>
                                         {publicacion.titulo}
                                     </Link>
-                                    {admin && (
-                                        <button className='remove' id={publicacion.id} onClick={() => borrarPublicacion(publicacion.id)}>X</button>)}
                                 </h1>
                                 <h4>{publicacion.usuario}</h4>
                                 <Markdown remarkPlugins={[remarkGfm]}>{publicacion.contenido}</Markdown>

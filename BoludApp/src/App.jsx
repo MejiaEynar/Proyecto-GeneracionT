@@ -62,7 +62,7 @@ function Inicio(props) {
         if (!isLoggedIn) {
             // Reemplazo de alert()
             // En una aplicación real, usarías un modal o MessageBox
-            console.log('Debes iniciar sesión para crear una publicación.');
+            alert('Debes iniciar sesión para crear una publicación.');
             return;
         }
         navigate('/new'); // ✅ solo si está logueado
@@ -125,8 +125,6 @@ function Inicio(props) {
                 <nav>
                     <ul>
                         {admin && <p className='admin'>ADMIN</p>}
-
-                        {/* 🔹 Cambiado: antes era un <Link>, ahora es un <button> */}
                         <li>
                             <button className='boton' onClick={manejarNuevaPublicacion}>
                                 <img src={postLogo} className='Logo' alt='crear' />
@@ -165,16 +163,9 @@ function Inicio(props) {
 
                         return (
                             <div key={publicacion.id} className='publicacion'>
-                                <h2>{publicacion.usuario}</h2>
-                                {admin && (
-                                    <button
-                                        className='remove'
-                                        id={publicacion.id}
-                                        onClick={() => borrarPublicacion(publicacion.id)}
-                                    >
-                                        X
-                                    </button>
-                                )}
+                                <h2>
+                                    <Link to={`/usuario/${publicacion.usuario}`}>{publicacion.usuario}</Link>
+                                </h2>
                                 <h3>
                                     <Link to={`/post/${publicacion.id}`}>{publicacion.titulo}</Link>
                                 </h3>
@@ -353,7 +344,7 @@ function App() {
                         publicaciones={publicaciones}
                         setPublicaciones={setPublicaciones}
                         // Reemplazo de alert()
-                        handleLike={isLoggedIn ? handleLike : () => console.log('Debes iniciar sesión para dar "Me gusta".')}
+                        handleLike={isLoggedIn ? handleLike : () => alert('Debes iniciar sesión para dar "Me gusta".')}
                         isLoggedIn={isLoggedIn}
                         currentUser={currentUser}
                         handleLogout={handleLogout}
@@ -431,7 +422,7 @@ function App() {
                         publicaciones={publicaciones}
                         setPublicaciones={setPublicaciones}
                         // Reemplazo de alert()
-                        handleLike={isLoggedIn ? handleLike : () => console.log('Debes iniciar sesión para dar "Me gusta" a la publicación.')}
+                        handleLike={isLoggedIn ? handleLike : () => alert('Debes iniciar sesión para dar "Me gusta" a la publicación.')}
                         isLoggedIn={isLoggedIn}
                         currentUser={currentUser}
                     />
@@ -449,7 +440,7 @@ function App() {
                         theme={theme}
                         publicaciones={publicaciones}
                         setPublicaciones={setPublicaciones}
-                        handleLike={isLoggedIn ? handleLike : () => console.log('Debes iniciar sesión para dar "Me gusta".')}
+                        handleLike={isLoggedIn ? handleLike : () => alert('Debes iniciar sesión para dar "Me gusta".')}
                         handleDeletePost={handleDeletePost} // 👈 agregado
                     />
                 }
