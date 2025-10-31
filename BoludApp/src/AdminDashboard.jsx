@@ -52,6 +52,11 @@ function AdminDashboard({ theme, setAdmin }) {
         loadData();
     }, [loadData]);
 
+useEffect(() => {
+  document.body.className = theme;
+}, [theme]);
+
+
     // === ACCIONES USUARIOS ===
     const handleViewUser = (username) => navigate(`/usuario/${username}`);
 

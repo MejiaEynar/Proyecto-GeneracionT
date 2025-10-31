@@ -220,3 +220,48 @@
     margin-top: 20px;
     font-size: 15px;
 }
+/* -------------------- Estilos Modo Oscuro -------------------- */
+
+.dark .dash-kpi-card,
+.dark .dash-user-table-container {
+    background-color: var(--box-background-dark, #16202b);
+    border-color: var(--border-color-dark, #333639);
+    color: var(--text-dark, #e1e8ed);
+}
+
+.dark .dash-kpi-title {
+    color: #8899a6;
+}
+
+.dark .dash-user-table th {
+    background-color: #22303c;
+    color: #8899a6;
+}
+
+.dark .dash-user-table td {
+    border-color: var(--border-color-dark, #333639);
+    color: var(--text-dark, #e1e8ed);
+}
+
+.dark .dash-user-table tbody tr:hover {
+    background-color: #22303c;
+}
+
+/* Responsividad */
+@media (max-width: 768px) {
+    .dash-user-table thead {
+        display: none;
+    }
+
+    .dash-user-table,
+    .dash-user-table tbody,
+    .dash-user-table tr,
+    .dash-user-table td {
+        display: block;
+        width: 100%;
+    }
+
+    .dash-user-table td {
+        padding: 10px;
+    }
+}

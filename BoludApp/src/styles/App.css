@@ -67,7 +67,33 @@ body {
   border-radius: 12px;
   border: 1px solid;
   font-size: 16px;
+  background-color: var(--secondary-bg-color, #ffffff);
+  border-color: var(--border-color, #e7e9ea);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  transition: transform 0.2s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+  color: inherit;
 }
+
+.publicacion:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  background-color: var(--hover-bg-color, #f9f9f9);
+}
+
+/* ---- MODO OSCURO ---- */
+.dark .publicacion {
+  background-color: #1d2733;
+  border-color: #333639;
+  box-shadow: 0 2px 6px rgba(255,255,255,0.05);
+  transition: transform 0.2s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+}
+
+.dark .publicacion:hover {
+  transform: translateY(-2px);
+  background-color: #22303c;
+  box-shadow: 0 4px 12px rgba(255,255,255,0.1), 0 0 6px rgba(29,155,240,0.3);
+}
+
 
 .publicacion a {
   text-decoration: none;

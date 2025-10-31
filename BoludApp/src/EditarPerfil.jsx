@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./styles/EditarPerfil.css";
+
 function EditarPerfil({ theme, currentUser, usersData, handleEditProfile, isLoggedIn }) {
     const navigate = useNavigate();
 
@@ -22,6 +23,23 @@ function EditarPerfil({ theme, currentUser, usersData, handleEditProfile, isLogg
     const [bannerUrl, setBannerUrl] = useState(userData.banner || "");
     const [avatarUrl, setAvatarUrl] = useState(userData.avatar || "");
     const [error, setError] = useState("");
+
+    // Manejo de archivos locales (banner y avatar)
+    const handleBannerFileChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const imageURL = URL.createObjectURL(file); // crea URL temporal
+            setBannerUrl(imageURL);
+        }
+    };
+
+    const handleAvatarFileChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const imageURL = URL.createObjectURL(file);
+            setAvatarUrl(imageURL);
+        }
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -62,7 +80,7 @@ function EditarPerfil({ theme, currentUser, usersData, handleEditProfile, isLogg
 
                     <label>Biografía:</label>
                     <textarea
-                        className={"editarBio"}
+                        className="editarBio"
                         id="content"
                         value={bio}
                         onChange={(e) => setBio(e.target.value)}
@@ -71,26 +89,37 @@ function EditarPerfil({ theme, currentUser, usersData, handleEditProfile, isLogg
                         rows="3"
                     ></textarea>
 
-                    <label>URL del Banner:</label>
-                    <input
-                        type="text"
-                        value={bannerUrl}
-                        onChange={(e) => setBannerUrl(e.target.value)}
-                        placeholder="URL de la imagen de portada"
-                    />
+                    {/* --- Banner --- */}
+                    <label>Banner:</label>
 
-                    <label>URL del Avatar:</label>
-                    <input
-                        type="text"
-                        value={avatarUrl}
-                        onChange={(e) => setAvatarUrl(e.target.value)}
-                        placeholder="URL de la imagen de perfil"
-                    />
+                    <input type="file" accept="image/*" onChange={handleBannerFileChange} />
+                    {bannerUrl && (
+                        <img
+                            src={bannerUrl}
+                            alt="Vista previa del banner"
+                            className="preview-banner"
+                        />
+                    )}
+
+                    {/* --- Avatar --- */}
+                    <label>Avatar:</label>
+                    <input type="file" accept="image/*" onChange={handleAvatarFileChange} />
+                    {avatarUrl && (
+                        <img
+                            src={avatarUrl}
+                            alt="Vista previa del avatar"
+                            className="preview-avatar"
+                        />
+                    )}
 
                     <button type="submit" className="btn-crear" style={{ marginTop: '20px' }}>
                         Guardar Cambios
                     </button>
-                    <button type="button" onClick={() => navigate('/usuario')} className="btn-iniciar">
+                    <button
+                        type="button"
+                        onClick={() => navigate('/usuario')}
+                        className="btn-iniciar"
+                    >
                         Cancelar
                     </button>
                 </form>
