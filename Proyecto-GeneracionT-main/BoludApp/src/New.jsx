@@ -27,7 +27,7 @@ function New(props) {
       await addDoc(collection(db, "publicaciones"), nuevaPublicacion);
       console.log("✅ Publicación subida con éxito a Firestore");
     } catch (error) {
-      console.error(" Error al subir la publicación:", error);
+      console.error("Error al subir la publicación:", error);
       alert("Error al subir la publicación. Intenta nuevamente.");
     }
   }
