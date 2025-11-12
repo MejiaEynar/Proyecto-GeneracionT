@@ -1,0 +1,254 @@
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+.Nav {
+  position: relative;              /* permite posicionar elementos dentro */
+  display: flex;
+  align-items: center;             /* centra verticalmente */
+  height: 60px;
+  background-color: inherit;       /* mantiene tu modo claro/oscuro */
+  border-bottom: 1px solid #333639;
+  padding: 0 15px;
+}
+
+.publicacion-header {
+  display: flex;             /* Habilita el layout flexible */
+  justify-content: space-between; /* Empuja los elementos a los extremos */
+  align-items: baseline;     /* Alinea por la base del texto */
+  margin-bottom: 10px;       /* Espacio debajo del título/fecha */
+  margin-top: 5px;           /* Pequeño espacio sobre el título */
+}
+
+/* Ajusta el margen del título para que no interfiera */
+.publicacion-header h3 {
+  margin: 0;
+  font-size: 18px; /* O el tamaño que uses para los títulos */
+  flex-shrink: 1;
+  min-width: 0; /* Necesario para que el texto largo se trunque si es necesario */
+}
+
+/* 🟢 Clase de la fecha (aplicar color grisáceo) */
+.usuario-post-date {
+  font-size: 13px;
+  white-space: nowrap; /* Evita que la fecha salte de línea */
+  flex-shrink: 0; /* Evita que la fecha se encoja */
+
+  /* Colores por defecto (grisáceo) */
+  color: #657786;
+}
+
+/* Colores de la fecha en modo oscuro */
+.dark .usuario-post-date {
+  color: #8899a6; /* Gris claro para modo oscuro */
+}
+.publicacion-header {
+  display: flex;             /* Habilita el layout flexible */
+  justify-content: space-between; /* Empuja el título a la izquierda y la fecha a la derecha */
+  align-items: baseline;     /* Alinea por la base del texto */
+  margin-bottom: 10px;       /* Espacio debajo del header */
+}
+
+/* 🚨 ELIMINA MÁRGENES DEL TÍTULO DENTRO DEL HEADER */
+.publicacion-header h3 {
+  margin-top: 0;
+  margin-bottom: 0;
+  font-size: 18px;
+  flex-shrink: 1; /* Permite que el título se encoja si la fecha lo necesita */
+  min-width: 0;
+}
+
+/* Estilos de la fecha */
+.usuario-post-date {
+  font-size: 13px;
+  white-space: nowrap; /* Evita que la fecha salte de línea */
+  flex-shrink: 0; /* Evita que la fecha se encoja */
+  color: #657786; /* Color grisáceo para modo claro */
+  margin-left: 15px; /* Pequeño margen para separar de títulos largos */
+}
+
+/* Colores de la fecha en modo oscuro */
+.dark .usuario-post-date {
+  color: #8899a6;
+}
+
+.Perfil {
+  position: absolute;
+  left: 15px;                      /* fija el botón/enlace a la izquierda */
+  display: flex;
+  align-items: center;
+  list-style: none;
+}
+
+.Imagen {
+  flex: 1;                         /* toma todo el espacio central */
+  display: flex;
+  justify-content: center;         /* centra horizontalmente el logo */
+  align-items: center;             /* centra verticalmente */
+}
+
+.Logo {
+  width: 50px;
+  height: 50px;
+}
+
+
+.SearchBar {
+  position: fixed; /* Hace que la barra se quede en la parte superior al hacer scroll */
+  bottom: 0;
+  z-index: 1000;
+  width: 100%;
+}
+
+.SearchBar > nav > ul {
+  display: flex;
+  padding: 15px;
+  margin: 0;
+  justify-content: space-around;
+  align-items: center;
+  list-style: none
+}
+
+.Inicio, .New {
+  font-size: 20px;
+  font-weight: bold;
+  text-decoration: none;
+  justify-content: space-evenly;
+}
+
+.SearchBar a:hover {
+  text-decoration: underline;
+}
+
+.publicacion {
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: 12px;
+  border: 1px solid;
+  font-size: 16px;
+  background-color: var(--secondary-bg-color, #ffffff);
+  border-color: var(--border-color, #e7e9ea);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  transition: transform 0.2s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+  color: inherit;
+}
+
+.publicacion:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  background-color: var(--hover-bg-color, #f9f9f9);
+}
+
+/* ---- MODO OSCURO ---- */
+.dark .publicacion {
+  background-color: #1d2733;
+  border-color: #333639;
+  box-shadow: 0 2px 6px rgba(255,255,255,0.05);
+  transition: transform 0.2s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+}
+
+.dark .publicacion:hover {
+  transform: translateY(-2px);
+  background-color: #22303c;
+  box-shadow: 0 4px 12px rgba(255,255,255,0.1), 0 0 6px rgba(29,155,240,0.3);
+}
+
+
+.publicacion a {
+  text-decoration: none;
+}
+
+.boton {
+    display: inline-flex;       /* coloca el contenido en fila */
+    align-items: center;        /* centra verticalmente el ícono y el número */
+    gap: 6px;                   /* espacio entre el corazón y el número */
+    width: auto;                /* ya no necesitamos ancho/alto fijos */
+    height: auto;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    padding: 0;
+    /* quita relleno si no lo querés */
+}
+.boton.liked {
+    color: #e91e63;  /* rosa cuando ya diste me gusta */
+}
+
+.light .boton {
+  color: #0f1419;
+}
+
+.dark .boton {
+  color: white;
+}
+
+.like {
+    background-color: transparent;
+    width: 20px;
+    height: 20px;
+}
+
+.admin {
+  color: red;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+/* Estilos del modo claro (basado en Twitter) */
+.light {
+  background-color: #ffffff;
+  color: #0f1419;
+}
+.light .SearchBar > nav > ul {
+  background-color: #ffffff;
+  border-bottom: 1px solid #e7e9ea;
+}
+.light .Inicio, .light .New {
+  color: #0f1419;
+}
+.light .publicacion {
+  background-color: #ffffff;
+  border-color: #e7e9ea;
+}
+.light .publicacion a {
+  color: #0f1419;
+}
+.light .publicacion button.remove {
+  color: #0f1419;
+  border-color: #e7e9ea;
+}
+.light .h4-h4 {
+  color: #0f1419;
+}
+
+/* Estilos del modo oscuro (basado en Twitter "Dim") */
+.dark {
+  background-color: #16202b;
+  color: #e7e9ea;
+}
+.dark .SearchBar > nav > ul {
+  background-color: #16202b;
+  border-bottom: 1px solid #333639;
+}
+.dark .Inicio, .dark .New {
+  color: #e7e9ea;
+}
+.dark .publicacion {
+  background-color: #1d2733;
+  border-color: #333639;
+}
+.dark .publicacion a {
+  color: #e7e9ea;
+}
+.dark .publicacion button.remove {
+  color: #e7e9ea;
+  border-color: #333639;
+}
+
+/* El color de los enlaces de "hover" se mantienen para ambos modos */
+.SearchBar a:hover {
+  text-decoration: underline;
+  color: #1d9bf0;
+}

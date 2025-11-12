@@ -1,0 +1,118 @@
+/* -------------------- Estilos Generales del Contenedor -------------------- */
+.admin-login-container { /* CAMBIO: admin-container -> admin-login-container */
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--primary-bg-color, #f0f2f5);
+    transition: background-color 0.3s ease, color 0.3s ease;
+    color: var(--main-text-color, #0f1419);
+    padding: 20px;
+}
+
+/* -------------------- Título H1 -------------------- */
+.admin-login-h1 { /* CAMBIO: admin-h1 -> admin-login-h1 */
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 30px;
+    color: var(--main-text-color, #0f1419);
+    text-align: center;
+}
+
+/* -------------------- Contenedor del Formulario -------------------- */
+.form-Admin-login { /* CAMBIO: form-Admin -> form-Admin-login */
+    /* Este div puede que no sea estrictamente necesario si admin-form es la caja principal */
+}
+
+.admin-login-form { /* CAMBIO: admin-form -> admin-login-form */
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+    max-width: 350px;
+    padding: 30px;
+    border-radius: 12px;
+    border: 1px solid var(--border-color, #cfd9de);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    background-color: var(--secondary-bg-color, #ffffff);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* -------------------- Campos de Entrada -------------------- */
+.admin-login-form input[type="password"] { /* CAMBIO: .admin-form -> .admin-login-form */
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid var(--border-color, #cfd9de);
+    font-size: 16px;
+    background-color: transparent;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    color: inherit;
+}
+
+.admin-login-form input[type="password"]:focus { /* CAMBIO: .admin-form -> .admin-login-form */
+    border-color: #1da1f2;
+    outline: none;
+    box-shadow: 0 0 0 1px #1da1f2;
+}
+
+/* Estilo para el error */
+.admin-login-form .input-error { /* CAMBIO: .admin-form -> .admin-login-form */
+    border-color: red !important;
+}
+
+/* -------------------- Botón de Enviar -------------------- */
+.admin-login-form button[type="submit"] { /* CAMBIO: .admin-form -> .admin-login-form */
+    padding: 12px 20px;
+    border-radius: 50px;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    background-color: #1da1f2;
+    color: #ffffff;
+    transition: background-color 0.2s;
+}
+
+.admin-login-form button[type="submit"]:hover:not(:disabled) { /* CAMBIO: .admin-form -> .admin-login-form */
+    background-color: #1a8cd8;
+}
+
+.admin-login-form button[type="submit"]:disabled { /* CAMBIO: .admin-form -> .admin-login-form */
+    background-color: #8ed0f8;
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+/* -------------------- Mensaje de Error -------------------- */
+.error-login-message { /* CAMBIO: error-message -> error-login-message */
+    color: red;
+    font-size: 14px;
+    text-align: center;
+    margin-top: 5px;
+}
+
+/* -------------------- Estilos Modo Oscuro -------------------- */
+
+.dark .admin-login-container { /* CAMBIO: admin-container -> admin-login-container */
+    background-color: var(--primary-bg-dark, #0f171e);
+}
+
+.dark .admin-login-h1 { /* CAMBIO: admin-h1 -> admin-login-h1 */
+    color: var(--text-color-dark, #e7e9ea);
+}
+
+.dark .admin-login-form { /* CAMBIO: admin-form -> admin-login-form */
+    background-color: var(--box-background-dark, #16202b);
+    border-color: var(--border-color-dark, #333639);
+    box-shadow: none;
+}
+
+.dark .admin-login-form input[type="password"] { /* CAMBIO: admin-form -> admin-login-form */
+    background-color: var(--input-bg-dark, #15202b);
+    border-color: var(--border-color-dark, #333639);
+    color: var(--text-color-dark, #e7e9ea);
+}
+
+.dark .admin-login-form input[type="password"]:focus { /* CAMBIO: admin-form -> admin-login-form */
+    box-shadow: 0 0 0 1px #1d9bf0;
+}

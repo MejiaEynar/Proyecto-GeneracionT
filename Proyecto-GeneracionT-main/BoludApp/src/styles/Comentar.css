@@ -1,0 +1,144 @@
+.Nav-comentar {
+    position: fixed; /* Hace que la barra se quede en la parte superior al hacer scroll */
+    bottom: 0;
+    z-index: 1000;
+    width: 100%;
+}
+
+.Nav-comentar > ul {
+    text-align: center;
+    list-style: none;|
+    display: flex;
+    padding: 15px;
+    margin: 0;
+    justify-content: space-around;
+    align-items: center;
+    border-bottom: 1px solid;
+    font-size: 20px;
+    font-weight: bold;
+
+}
+
+.comentarios {
+    margin-bottom: 10px;
+    font-size: 16px;
+    padding: 15px;
+    border-radius: 12px;
+    border: 1px solid;
+}
+
+.comentarios > h4 {
+    margin-left: 10px;
+    margin-top: 0;
+    margin-bottom: 2px;
+    font-weight: bold;
+}
+.comentarios p {
+    font-weight: normal;
+}
+
+.comentario-header {
+    display: flex;             /* Habilita el layout flexible */
+    justify-content: space-between; /* Empuja los elementos a los extremos */
+    align-items: baseline;     /* Alinea por la base del texto */
+    margin-bottom: 3px;       /* Espacio debajo del título/fecha */
+    margin-top: 1px;           /* Pequeño espacio sobre el título */
+}
+
+.Comen-title {
+    font-size: 16px;
+    margin: 15px 0;
+    font-weight: bold;
+}
+
+.form-comentarios {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 12px;
+}
+
+.form-comentarios > input[type=text],
+.form-comentarios > textarea {
+    resize: none;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 10px 0;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid;
+    background-color: transparent;
+    font-size: 16px;
+}
+
+.form-comentarios > input[type=button] {
+    align-self: flex-end;
+    width: auto;
+    padding: 8px 16px;
+    border-radius: 50px;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    background-color: #1d9bf0;
+    color: #ffffff;
+}
+
+.light .Nav-comentar > nav > ul {
+    background-color: #ffffff;
+    border-bottom: 1px solid #e7e9ea;
+}
+.light .Nav-comentar .inicio {
+    color: #0f1419;
+}
+
+.dark .nav-New > nav > ul {
+    background-color: #16202b;
+    border-color: #333639;
+}
+.dark .inicio {
+    color: #e7e9ea;
+}
+
+/* Estilos para el modo claro (basado en Twitter) */
+.dark .Nav-comentar > ul {
+    background-color: #16202b;
+    border-bottom: 1px solid #333639;
+}
+
+
+.light .comentarios {
+    background-color: #ffffff;
+    border-color: #e7e9ea;
+}
+.light .comentarios > p {
+    color: #0f1419;
+}
+.light .Comen-title {
+    color: #0f1419;
+}
+.light .form-comentarios > input,
+.light .form-comentarios > textarea {
+    border-color: #cfd9de;
+}
+
+/* Estilos para el modo oscuro (basado en Twitter "Dim") */
+.dark .Nav-comentar > ul {
+    background-color: #16202b;
+    border-color: #333639;
+}
+.dark .comentarios {
+    background-color: #1d2733;
+    border-color: #333639;
+}
+.dark .comentarios > p {
+    color: #e7e9ea;
+}
+.dark .Comen-title {
+    color: #e7e9ea;
+}
+.dark .form-comentarios > input,
+.dark .form-comentarios > textarea {
+    border-color: #333639;
+    color: #e7e9ea;
+}

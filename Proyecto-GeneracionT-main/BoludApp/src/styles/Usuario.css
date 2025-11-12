@@ -1,0 +1,248 @@
+/* --- Global y Contenedor Principal --- */
+.cuerpo {
+    margin: 12px;
+}
+
+.usuario-container {
+    font-family: "Segoe UI", Roboto, sans-serif;
+    max-width: 600px;
+    margin: 0 auto;
+    color: #0f1419;
+    background-color: white;
+    border: 1px solid #e6ecf0;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+/* --- Banner, Avatar e Info Principal --- */
+.usuario-banner img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.usuario-info {
+    padding: 16px;
+    position: relative;
+}
+
+.usuario-avatar {
+    position: absolute;
+    top: -60px; /* Superposición sobre el banner */
+    left: 16px;
+}
+
+.usuario-avatar img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 4px solid white;
+    background-color: white;
+}
+
+.usuario-info h2 {
+    /* Mover el nombre de usuario debajo del avatar */
+    margin-top: 70px;
+    margin-bottom: 0;
+    font-size: 22px;
+    font-weight: 700;
+}
+
+/* --- Secciones de Acciones (Botones) --- */
+.usuario-actions {
+    display: flex;
+    justify-content: flex-end; /* Lo mueve a la derecha */
+    /* Se mantiene la definición más simple y común, sin margen negativo */
+    margin-top: 12px;
+    margin-bottom: 20px;
+}
+
+/* Estilos del Botón Editar Perfil */
+.edit-profile {
+    border: 1px solid #1da1f2;
+    background-color: transparent;
+    color: #1da1f2;
+    padding: 6px 12px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.edit-profile:hover {
+    background-color: rgba(29, 161, 242, 0.1);
+}
+
+/* Estilos del Botón Seguir/Dejar de Seguir (follow-toggle-button) */
+.follow-toggle-button {
+    padding: 8px 15px;
+    border-radius: 9999px; /* Botón redondeado */
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+    margin-left: auto; /* Mover a la derecha */
+}
+
+.follow-toggle-button.follow {
+    background-color: var(--primary-color, #1DA1F2);
+    color: white;
+    border: none;
+}
+
+.follow-toggle-button.unfollow {
+    background-color: transparent;
+    color: var(--text-color);
+    border: 1px solid var(--border-color, #ccc);
+}
+
+.follow-toggle-button.unfollow:hover {
+    background-color: rgba(255, 0, 0, 0.1);
+    color: red;
+    border-color: red;
+}
+
+/* --- Información de Usuario Restante --- */
+.usuario-username {
+    color: gray;
+    margin-top: 2px;
+    margin-bottom: 8px;
+}
+
+.usuario-bio {
+    font-size: 15px;
+    margin-bottom: 8px;
+}
+
+.usuario-joined {
+    color: gray;
+    font-size: 14px;
+}
+
+.usuario-follow {
+    display: flex;
+    gap: 15px;
+    margin-top: 8px;
+    font-size: 15px;
+}
+
+.usuario-follow strong {
+    color: inherit;
+}
+
+/* --- Publicaciones --- */
+.usuario-posts {
+    /* Se utiliza la definición con margen superior y borde completo */
+    border-top: 1px solid #e6ecf0;
+    padding: 12px 16px;
+    margin-top: 30px;
+}
+
+/* Se fusionan los estilos de encabezado de posts */
+.usuario-posts h3 {
+    font-size: 18px;
+    margin-bottom: 8px;
+}
+
+.sin-posts {
+    color: gray;
+    font-size: 14px;
+    text-align: center;
+    font-style: italic;
+    margin-top: 20px;
+}
+
+/* Estilo del post individual */
+.usuario-post {
+    background-color: var(--secondary-bg-color, #ffffff);
+    border: 1px solid var(--border-color, #e7e9ea);
+    border-radius: 12px;
+    padding: 15px 18px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    transition: transform 0.2s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+    cursor: pointer;
+    color: inherit;
+}
+
+.usuario-post:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.usuario-post-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 10px;
+}
+
+.usuario-post-header h4 {
+    margin: 0;
+}
+
+.usuario-post h4 a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.usuario-post h4 a:hover {
+    color: #1d9bf0;
+    text-decoration: underline;
+}
+
+.usuario-post p {
+    font-size: 15px;
+    line-height: 1.5;
+    margin-bottom: 10px;
+}
+
+.usuario-post-date {
+    font-size: 13px;
+    color: #536471;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+/* --- DARK MODE --- */
+.usuario-container.dark {
+    background-color: #15202b;
+    color: #e1e8ed;
+    border-color: #38444d;
+}
+
+.usuario-container.dark .edit-profile {
+    border-color: #1d9bf0;
+    color: #1d9bf0;
+}
+
+.usuario-container.dark .edit-profile:hover {
+    background-color: rgba(29, 155, 240, 0.1);
+}
+
+.usuario-container.dark .usuario-username,
+.usuario-container.dark .usuario-joined,
+.usuario-container.dark .sin-posts {
+    color: #8899a6;
+}
+
+.usuario-container.dark .usuario-posts {
+    border-top-color: #38444d;
+}
+
+.dark .usuario-post {
+    background-color: #1d2733;
+    border-color: #333639;
+    box-shadow: 0 2px 6px rgba(255,255,255,0.05);
+}
+
+.dark .usuario-post:hover {
+    background-color: #22303c;
+    box-shadow: 0 4px 12px rgba(255,255,255,0.1);
+}
+
+.dark .usuario-post-date {
+    color: #8899a6;
+}
+
+.light .usuario-post-date {
+    color: #657786;
+}

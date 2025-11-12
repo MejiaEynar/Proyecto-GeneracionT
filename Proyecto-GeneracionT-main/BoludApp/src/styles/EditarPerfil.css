@@ -1,0 +1,32 @@
+.editarBio {
+    resize: none;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    border: 1px solid;
+    background-color: transparent;
+    font-size: 16px;
+}
+
+/* Vista previa de imágenes */
+.preview-banner {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin-top: 10px;
+    border-radius: 8px;
+    object-fit: cover;
+    border: 1px solid #ccc;
+}
+
+.preview-avatar {
+    display: block;
+    width: 100px;
+    height: 100px;
+    margin-top: 10px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid #ccc;
+}

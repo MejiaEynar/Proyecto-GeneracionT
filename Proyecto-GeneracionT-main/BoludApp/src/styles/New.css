@@ -1,0 +1,122 @@
+.nav-New {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.inicio {
+    text-decoration: none;
+}
+
+.nav-New > nav > ul {
+    list-style-type: none;
+    text-decoration: none;
+    display: flex;
+    padding: 15px;
+    margin: 0;
+    justify-content: space-around;
+    align-items: center;
+    border-bottom: 1px solid;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.form-New {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+
+}
+
+.form-New form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 500px; /* Limita el ancho para que no sea demasiado grande en pantallas grandes */
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid;
+    margin-bottom: 20px;
+}
+
+.form-New h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.form-New textarea,
+.form-New input[type=text] {
+    resize: none;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    border: 1px solid;
+    background-color: transparent;
+    font-size: 16px;
+}
+
+.form-New input[type=submit] {
+    align-self: flex-end;
+    width: auto;
+    padding: 8px 16px;
+    border-radius: 50px;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    background-color: #1d9bf0;
+    color: #ffffff;
+}
+
+.form-New  p{
+    text-align: center;
+}
+
+/* Estilos para el modo claro */
+.light .nav-New > nav > ul {
+    background-color: #ffffff;
+    border-color: #e7e9ea;
+}
+.light .nav-New .inicio {
+    color: #0f1419;
+}
+.light .form-New form {
+    background-color: #ffffff;
+    border-color: #e7e9ea;
+}
+.light .form-New textarea,
+.light .form-New input[type=text] {
+    border-color: #cfd9de;
+    color: #0f1419;
+}
+.light .markdown-style {
+    background-color: #ffffff;
+    border-color: #e7e9ea;
+    color: #0f1419;
+}
+
+/* Estilos para el modo oscuro */
+.dark .nav-New > nav > ul {
+    background-color: #16202b;
+    border-color: #333639;
+}
+.dark .nav-New .inicio {
+    color: #e7e9ea;
+}
+.dark .form-New form {
+    background-color: #1d2733;
+    border-color: #333639;
+}
+.dark .form-New textarea,
+.dark .form-New input[type=text] {
+    border-color: #333639;
+    color: #e7e9ea;
+}
+.dark .markdown-style {
+    background-color: #1d2733;
+    border-color: #333639;
+    color: #e7e9ea;
+}
