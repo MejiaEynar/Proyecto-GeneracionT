@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { doc, updateDoc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "./firebase"; // 🔥 Asegúrate de tener este import correcto
 import "./styles/EditarPerfil.css";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { storage } from "./firebase";
 
 function EditarPerfil({ theme, currentUser, usersData, handleEditProfile, isLoggedIn }) {
     const navigate = useNavigate();
@@ -28,19 +30,41 @@ function EditarPerfil({ theme, currentUser, usersData, handleEditProfile, isLogg
     const [loading, setLoading] = useState(false);
 
     // 🖼️ Manejo de archivos locales (banner y avatar)
-    const handleBannerFileChange = (e) => {
+    const handleBannerFileChange = async (e) => {
         const file = e.target.files[0];
         if (file) {
-            const imageURL = URL.createObjectURL(file);
-            setBannerUrl(imageURL);
+            // 👁️ Mostrar vista previa local inmediata
+            const localPreview = URL.createObjectURL(file);
+            setBannerUrl(localPreview);
+
+            try {
+                const bannerRef = ref(storage, `banners/${currentUser}_${file.name}`);
+                await uploadBytes(bannerRef, file);
+                const downloadURL = await getDownloadURL(bannerRef);
+                setBannerUrl(downloadURL);
+            } catch (error) {
+                console.error("❌ Error al subir banner:", error);
+                setError("No se pudo subir el banner.");
+            }
         }
     };
 
-    const handleAvatarFileChange = (e) => {
+    const handleAvatarFileChange = async (e) => {
         const file = e.target.files[0];
         if (file) {
-            const imageURL = URL.createObjectURL(file);
-            setAvatarUrl(imageURL);
+            // 👁️ Mostrar vista previa local inmediata
+            const localPreview = URL.createObjectURL(file);
+            setAvatarUrl(localPreview);
+
+            try {
+                const avatarRef = ref(storage, `avatars/${currentUser}_${file.name}`);
+                await uploadBytes(avatarRef, file);
+                const downloadURL = await getDownloadURL(avatarRef);
+                setAvatarUrl(downloadURL);
+            } catch (error) {
+                console.error("❌ Error al subir avatar:", error);
+                setError("No se pudo subir el avatar.");
+            }
         }
     };
 
