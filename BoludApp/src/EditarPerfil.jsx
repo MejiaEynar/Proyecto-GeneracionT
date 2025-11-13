@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { doc, updateDoc, getDoc, setDoc } from "firebase/firestore";
-import { db } from "./firebase"; // 🔥 Asegúrate de tener este import correcto
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import { db } from "./firebase";
 import "./styles/EditarPerfil.css";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { storage } from "./firebase";
 
 function EditarPerfil({ theme, currentUser, usersData, handleEditProfile, isLoggedIn }) {
     const navigate = useNavigate();
@@ -29,50 +27,11 @@ function EditarPerfil({ theme, currentUser, usersData, handleEditProfile, isLogg
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
 
-    // 🖼️ Manejo de archivos locales (banner y avatar)
-    const handleBannerFileChange = async (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            // 👁️ Mostrar vista previa local inmediata
-            const localPreview = URL.createObjectURL(file);
-            setBannerUrl(localPreview);
-
-            try {
-                const bannerRef = ref(storage, `banners/${currentUser}_${file.name}`);
-                await uploadBytes(bannerRef, file);
-                const downloadURL = await getDownloadURL(bannerRef);
-                setBannerUrl(downloadURL);
-            } catch (error) {
-                console.error("❌ Error al subir banner:", error);
-                setError("No se pudo subir el banner.");
-            }
-        }
-    };
-
-    const handleAvatarFileChange = async (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            // 👁️ Mostrar vista previa local inmediata
-            const localPreview = URL.createObjectURL(file);
-            setAvatarUrl(localPreview);
-
-            try {
-                const avatarRef = ref(storage, `avatars/${currentUser}_${file.name}`);
-                await uploadBytes(avatarRef, file);
-                const downloadURL = await getDownloadURL(avatarRef);
-                setAvatarUrl(downloadURL);
-            } catch (error) {
-                console.error("❌ Error al subir avatar:", error);
-                setError("No se pudo subir el avatar.");
-            }
-        }
-    };
-
     // 🧠 Cargar los datos actuales desde Firestore (si existen)
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const userRef = doc(db, "usuarios", username);
+                const userRef = doc(db, "usuarios", currentUser);
                 const userSnap = await getDoc(userRef);
                 if (userSnap.exists()) {
                     const data = userSnap.data();
@@ -104,7 +63,7 @@ function EditarPerfil({ theme, currentUser, usersData, handleEditProfile, isLogg
         try {
             const userRef = doc(db, "usuarios", currentUser);
 
-            // 🔥 Si el documento no existe, lo crea
+            // 🔥 Si el documento no existe, lo crea o actualiza
             await setDoc(userRef, {
                 name,
                 bio,
@@ -159,24 +118,36 @@ function EditarPerfil({ theme, currentUser, usersData, handleEditProfile, isLogg
                     ></textarea>
 
                     {/* --- Banner --- */}
-                    <label>Banner:</label>
-                    <input type="file" accept="image/*" onChange={handleBannerFileChange} />
+                    <label>URL del Banner:</label>
+                    <input
+                        type="text"
+                        value={bannerUrl}
+                        onChange={(e) => setBannerUrl(e.target.value)}
+                        placeholder="Pega aquí la URL de una imagen (.jpg, .png, etc.)"
+                    />
                     {bannerUrl && (
                         <img
                             src={bannerUrl}
                             alt="Vista previa del banner"
                             className="preview-banner"
+                            onError={(e) => e.target.style.display = 'none'}
                         />
                     )}
 
                     {/* --- Avatar --- */}
-                    <label>Avatar:</label>
-                    <input type="file" accept="image/*" onChange={handleAvatarFileChange} />
+                    <label>URL del Avatar:</label>
+                    <input
+                        type="text"
+                        value={avatarUrl}
+                        onChange={(e) => setAvatarUrl(e.target.value)}
+                        placeholder="Pega aquí la URL de tu avatar"
+                    />
                     {avatarUrl && (
                         <img
                             src={avatarUrl}
                             alt="Vista previa del avatar"
                             className="preview-avatar"
+                            onError={(e) => e.target.style.display = 'none'}
                         />
                     )}
 
