@@ -3,6 +3,55 @@ body {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
+/* --- Estilos para la Publicación en Inicio.jsx --- */
+
+/* Contenedor que alinea el avatar, nombre y @username */
+.publicacion-usuario-info {
+  margin-bottom: 10px;
+}
+
+/* El enlace completo para el nombre del usuario */
+.publicacion-usuario-info .usuario-link {
+  display: flex;
+  align-items: center; /* Alinea verticalmente el avatar y el texto */
+  text-decoration: none;
+  color: inherit;
+  font-size: 1.1em; /* Un poco más grande para el nombre */
+}
+
+/* El círculo del avatar */
+.publicacion-avatar {
+  width: 36px; /* Tamaño del avatar */
+  height: 36px;
+  border-radius: 50%; /* Lo hace circular */
+  object-fit: cover;
+  margin-right: 8px; /* Espacio entre el avatar y el nombre */
+}
+
+/* Contenedor del nombre y @username para apilarlos */
+.publicacion-usuario-info > .usuario-link > div {
+  display: flex;
+  flex-direction: column; /* Apila el nombre fuerte y el @username */
+  line-height: 1.2;
+}
+
+/* Estilo para el @username */
+.usuario-username-text {
+  /* Ya tiene un estilo inline, pero si necesitas ajustarlo más: */
+  font-weight: normal;
+}
+
+/* Opcional: Ajustar el h3 del título para que no choque con el header de usuario */
+.publicacion-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+}
+.publicacion-header h3 {
+  margin: 0;
+  font-size: 1.1em;
+}
 .Nav {
   position: relative;              /* permite posicionar elementos dentro */
   display: flex;

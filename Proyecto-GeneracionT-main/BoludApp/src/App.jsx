@@ -176,31 +176,41 @@ function Inicio(props) {
                         const likeCount = likedBy.length;
 
                         return (
+                            // ------------------- CÓDIGO CORREGIDO -------------------
                             <div key={publicacion.id} className='publicacion'>
-							<h2>
-							  <Link to={`/usuario/${publicacion.usuario}`}>
-							    {usersData?.[publicacion.usuario]?.name || publicacion.usuario}{" "}
-							    <span style={{ color: "gray", fontSize: "0.9em" }}>
-							      (@{usersData?.[publicacion.usuario]?.username || `@${publicacion.usuario}`})
-							    </span>
-							  </Link>
-							</h2>
 
+                                {/* 1. INFORMACIÓN DEL USUARIO (Avatar + Nombre/Username) */}
+                                <div className='publicacion-usuario-info'>
+                                    <Link to={`/usuario/${publicacion.usuario}`} className='usuario-link'>
+                                        <img
+                                            src={usersData?.[publicacion.usuario]?.avatar || "https://abs.twimg.com/sticky/default_profile_images/default_profile_400x400.png"}
+                                            alt="Avatar del usuario"
+                                            className='publicacion-avatar'
+                                        />
+                                        <div>
+                                            {/* Nombre */}
+                                            <strong>{usersData?.[publicacion.usuario]?.name || publicacion.usuario}</strong>
+                                            {/* Username */}
+                                            <span className="usuario-username-text" style={{ color: "gray", fontSize: "0.9em" }}>
+                    @{usersData?.[publicacion.usuario]?.username || publicacion.usuario}
+                </span>
+                                        </div>
+                                    </Link>
+                                </div>
 
-                                {/* 2. CONTENEDOR FLEX (Título y Fecha) */}
+                                {/* 2. HEADER DE LA PUBLICACIÓN (Título y Fecha) */}
                                 <div className='publicacion-header'>
-                                    {/* Título de la publicación */}
                                     <h3>
                                         <Link to={`/post/${publicacion.id}`}>{publicacion.titulo}</Link>
                                     </h3>
-
-                                    {/* Fecha: usa el nombre de clase que ya definiste en CSS */}
                                     {publicacion.fechaCreacion && (
                                         <span className='usuario-post-date'>
-                  {formatDate(publicacion.fechaCreacion)}
-                </span>
+              {formatDate(publicacion.fechaCreacion)}
+            </span>
                                     )}
                                 </div>
+
+                                {/* 3. CONTENIDO Y BOTÓN DE LIKE */}
                                 <Markdown remarkPlugins={[remarkGfm]}>
                                     {publicacion.contenido}
                                 </Markdown>
@@ -213,6 +223,7 @@ function Inicio(props) {
                                     {likeCount}
                                 </button>
                             </div>
+// ------------------- FIN CÓDIGO CORREGIDO -------------------
                         );
                     })
                 ) : (
