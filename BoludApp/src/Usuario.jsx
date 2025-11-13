@@ -29,7 +29,6 @@ function Usuario({
     const [currentUserData, setCurrentUserData] = useState(null);
     const [isFollowing, setIsFollowing] = useState(false);
 
-    // 🟢 Cargar datos del usuario a mostrar y del usuario actual desde Firestore
     useEffect(() => {
         const fetchUserData = async () => {
             if (!userToShow) return;
@@ -67,7 +66,6 @@ function Usuario({
         fetchUserData();
     }, [userToShow, currentUser]);
 
-    // 🟢 Manejar seguir / dejar de seguir y guardar en Firestore
     const handleFollowToggle = async () => {
         if (!isLoggedIn || !currentUser || !userData) return;
 
@@ -76,14 +74,12 @@ function Usuario({
 
         try {
             if (isFollowing) {
-                // 🔴 Dejar de seguir
                 await Promise.all([
                     updateDoc(currentUserRef, { following: arrayRemove(userToShow) }),
                     updateDoc(userToShowRef, { followers: arrayRemove(currentUser) })
                 ]);
                 setIsFollowing(false);
             } else {
-                // 🟢 Seguir
                 await Promise.all([
                     updateDoc(currentUserRef, { following: arrayUnion(userToShow) }),
                     updateDoc(userToShowRef, { followers: arrayUnion(currentUser) })
@@ -91,7 +87,6 @@ function Usuario({
                 setIsFollowing(true);
             }
 
-            // Refrescar datos después del cambio
             const updatedUserSnap = await getDoc(userToShowRef);
             if (updatedUserSnap.exists()) setUserData(updatedUserSnap.data());
         } catch (error) {
@@ -99,7 +94,6 @@ function Usuario({
         }
     };
 
-    // 🟢 Redirección si no hay sesión y no se está viendo otro perfil
     useEffect(() => {
         if (!urlUsername && !isLoggedIn) navigate("/login");
     }, [isLoggedIn, navigate, urlUsername]);
@@ -112,10 +106,14 @@ function Usuario({
     const followerCount = Array.isArray(userData.followers) ? userData.followers.length : 0;
     const followingCount = Array.isArray(userData.following) ? userData.following.length : 0;
 
-    // 🔹 Filtrar publicaciones del usuario
-    const publicacionesUsuario = publicaciones.filter(
-        (post) => post.usuario === userToShow
-    );
+    // 🔹 Filtrar y ordenar publicaciones del usuario por fecha (más reciente primero)
+    const publicacionesUsuario = publicaciones
+        .filter((post) => post.usuario === userToShow)
+        .sort((a, b) => {
+            const fechaA = a.fechaCreacion?.seconds ? a.fechaCreacion.seconds * 1000 : new Date(a.fechaCreacion).getTime();
+            const fechaB = b.fechaCreacion?.seconds ? b.fechaCreacion.seconds * 1000 : new Date(b.fechaCreacion).getTime();
+            return fechaB - fechaA;
+        });
 
     return (
         <>

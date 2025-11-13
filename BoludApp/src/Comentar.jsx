@@ -112,58 +112,80 @@ function Comentar(props) {
   const postLikeCount = postLikedBy.length;
 
   return (
-    <>
-      <header className='Nav-comentar'>
-        <ul>
-          <li>
-            <Link className="inicio" to="/">
-              {theme === 'light' ? (
-                <img src={inicioBlack} className="Logo" alt="modo claro" />
-              ) : (
-                <img src={inicioWhite} className="Logo" alt="modo oscuro" />
-              )}
-            </Link>
-          </li>
-        </ul>
-      </header>
-
-      <main>
-        <section>
-          {publicacion ? (
-            <div key={publicacion.id} className="publicacion">
-			<h4>
-			  <Link to={`/usuario/${publicacion.usuario}`}>
-			    {usersData?.[publicacion.usuario]?.name || publicacion.usuario}{" "}
-			    <span style={{ color: "gray", fontSize: "0.9em" }}>
-			      (@{usersData?.[publicacion.usuario]?.username || `@${publicacion.usuario}`})
-			    </span>
-			  </Link>
-			</h4>
-
-              <div className='publicacion-header'>
-                <h3>{publicacion.titulo}</h3>
-                {publicacion.fechaCreacion && (
-                  <span className='usuario-post-date'>
-                   {formatDate(publicacion.fechaCreacion)}
-                  </span>
+      <>
+        <header className='Nav-comentar'>
+          <ul>
+            <li>
+              <Link className="inicio" to="/">
+                {theme === 'light' ? (
+                  <img src={inicioBlack} className="Logo" alt="modo claro" />
+                ) : (
+                  <img src={inicioWhite} className="Logo" alt="modo oscuro" />
                 )}
-              </div>
-              <Markdown remarkPlugins={[remarkGfm]}>{publicacion.contenido}</Markdown>
+              </Link>
+            </li>
+          </ul>
+        </header>
 
-              <button
-                className={`boton ${postUserHasLiked ? 'liked' : ''}`}
-                onClick={() => handleLike(publicacion.id)}
-              >
-                {postUserHasLiked
-                  ? <img src={like1} className="like" alt="like" />
-                  : <img src={like} className="like" alt="like" />}
-                {postLikeCount} Me gusta
-              </button>
-            </div>
-          ) : (
-            <p>No se encontró la publicación</p>
-          )}
-        </section>
+        <main>
+          <section>
+            {publicacion ? (
+              <div key={publicacion.id} className="publicacion">
+                {/* ✅ Avatar + Nombre del autor */}
+                <div className="publicacion-usuario-info">
+                  <Link to={`/usuario/${publicacion.usuario}`} className="usuario-link">
+                    <img
+                      src={
+                        usersData?.[publicacion.usuario]?.avatar ||
+                        "https://abs.twimg.com/sticky/default_profile_images/default_profile_400x400.png"
+                      }
+                      alt="Avatar del autor"
+                      className="publicacion-avatar"
+                    />
+                    <div>
+                      <strong>{usersData?.[publicacion.usuario]?.name || publicacion.usuario}</strong>
+                      <span
+                        style={{ color: "gray", fontSize: "0.9em", marginLeft: "5px" }}
+                      >
+                        @{usersData?.[publicacion.usuario]?.username || publicacion.usuario}
+                      </span>
+                    </div>
+                  </Link>
+                </div>
+
+                <div className="publicacion-header">
+                  <h3>{publicacion.titulo}</h3>
+                  {publicacion.fechaCreacion && (
+                    <span className="usuario-post-date">
+                      {formatDate(publicacion.fechaCreacion)}
+                    </span>
+                  )}
+                </div>
+
+                <Markdown remarkPlugins={[remarkGfm]}>
+                  {publicacion.contenido}
+                </Markdown>
+
+                <button
+                  className={`boton ${postUserHasLiked ? "liked" : ""}`}
+                  onClick={() => handleLike(publicacion.id)}
+                >
+                  {postUserHasLiked ? (
+                    <img src={like1} className="like" alt="like" />
+                  ) : (
+                    <img src={like} className="like" alt="like" />
+                  )}
+                  {postLikeCount} Me gusta
+                </button>
+              </div>
+            ) : (
+              <p>No se encontró la publicación</p>
+            )}
+          </section>
+
+          {/* ============================= */}
+          {/* SECCIÓN DE COMENTARIOS */}
+          {/* ============================= */}
 
         <section>
           <div className='form-comentarios'>

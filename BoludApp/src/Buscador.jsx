@@ -6,9 +6,9 @@ import inicioBlack from "./assets/inicioBlack.png";
 import inicioWhite from "./assets/inicioWhite.png";
 import like from './assets/like.png';
 import like1 from './assets/like1.png';
-import './styles/Buscador.css';
 import buscarBlack from './assets/buscar.png';
 import buscarWhite from './assets/buscar1.png';
+import './styles/Buscador.css';
 import './styles/App.css';
 import "./styles/New.css";
 
@@ -30,19 +30,12 @@ function Buscador(props) {
     handleLike,
     isLoggedIn,
     currentUser,
-    usersData // 🔹 Ahora también recibe los datos de los usuarios
+    usersData
   } = props;
 
   const navigate = useNavigate();
-
   const [searchTerm, setSearchTerm] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
-
-  const borrarPublicacion = (id) => {
-    const publicacionesActualizadas = publicaciones.filter((publicacion) => publicacion.id !== id);
-    setPublicaciones(publicacionesActualizadas);
-    localStorage.setItem('publicaciones', JSON.stringify(publicacionesActualizadas));
-  };
 
   const handleSearchClick = (e) => {
     e.preventDefault();
@@ -54,12 +47,10 @@ function Buscador(props) {
     .reverse()
     .filter(post => {
       if (!searchQuery) return true;
-
       const term = searchQuery.toLowerCase();
-      const titulo = post.titulo ? post.titulo.toLowerCase() : '';
-      const contenido = post.contenido ? post.contenido.toLowerCase() : '';
-      const usuario = post.usuario ? post.usuario.toLowerCase() : '';
-
+      const titulo = post.titulo?.toLowerCase() || '';
+      const contenido = post.contenido?.toLowerCase() || '';
+      const usuario = post.usuario?.toLowerCase() || '';
       return titulo.includes(term) || contenido.includes(term) || usuario.includes(term);
     });
 
@@ -83,32 +74,40 @@ function Buscador(props) {
 
       {/* 🔹 RESULTADOS */}
       <main className={`publicaciones-Inicio ${theme}`}>
-        {postsFiltrados && postsFiltrados.length > 0 ? (
+        {postsFiltrados.length > 0 ? (
           postsFiltrados.map((publicacion) => {
             const likedBy = publicacion.likedBy || [];
             const userHasLiked = isLoggedIn && likedBy.includes(currentUser);
             const likeCount = likedBy.length;
+            const userData = usersData?.[publicacion.usuario];
 
             return (
               <div key={publicacion.id} className='publicacion'>
-                {/* 🔹 Nombre y usuario (clickeable) */}
-                <h2>
-                  <Link to={`/usuario/${publicacion.usuario}`}>
-                    {usersData?.[publicacion.usuario]?.name || publicacion.usuario}{" "}
-                    <span style={{ color: "gray", fontSize: "0.9em" }}>
-                      (@{usersData?.[publicacion.usuario]?.username || `@${publicacion.usuario}`})
-                    </span>
+                
+                {/* Usuario (Avatar + Nombre + Username) */}
+                <div className='publicacion-usuario-info'>
+                  <Link to={`/usuario/${publicacion.usuario}`} className='usuario-link'>
+                    <img
+                      src={userData?.avatar || "https://abs.twimg.com/sticky/default_profile_images/default_profile_400x400.png"}
+                      alt="Avatar del usuario"
+                      className='publicacion-avatar'
+                    />
+                    <div>
+                      <strong>{userData?.name || publicacion.usuario}</strong>
+                      <span style={{ color: "gray", fontSize: "0.9em" }}>
+                        @{userData?.username || publicacion.usuario}
+                      </span>
+                    </div>
                   </Link>
-                </h2>
+                </div>
 
-                {/* 🔹 Título + Fecha */}
+                {/* Título y fecha */}
                 <div className='publicacion-header'>
                   <h3>
                     <Link to={`/post/${publicacion.id}`}>
                       {publicacion.titulo}
                     </Link>
                   </h3>
-
                   {publicacion.fechaCreacion && (
                     <span className='usuario-post-date'>
                       {formatDate(publicacion.fechaCreacion)}
@@ -116,18 +115,18 @@ function Buscador(props) {
                   )}
                 </div>
 
-                {/* 🔹 Contenido Markdown */}
+                {/* Contenido Markdown */}
                 <Markdown remarkPlugins={[remarkGfm]}>
                   {publicacion.contenido}
                 </Markdown>
 
-                {/* 🔹 Botón Like */}
+                {/* Botón Like */}
                 <button className='boton' onClick={() => handleLike(publicacion.id)}>
-                  {userHasLiked ? (
-                    <img src={like1} className='like' alt='like activo' />
-                  ) : (
-                    <img src={like} className='like' alt='like inactivo' />
-                  )}
+                  <img
+                    src={userHasLiked ? like1 : like}
+                    className='like'
+                    alt='like'
+                  />
                   {likeCount}
                 </button>
               </div>
