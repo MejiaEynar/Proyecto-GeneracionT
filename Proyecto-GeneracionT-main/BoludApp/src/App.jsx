@@ -24,6 +24,7 @@ import EditarPerfil from './EditarPerfil';
 import { collection, getDocs, onSnapshot } from "firebase/firestore";
 import { db } from "./firebase";
 import { doc, updateDoc, deleteDoc } from "firebase/firestore";
+
 // ------------------- COMPONENTE INICIO -------------------
 
 const formatDate = (fecha) => {
@@ -33,6 +34,8 @@ const formatDate = (fecha) => {
     return new Date(fecha).toLocaleDateString("es-ES");
   return "Fecha inválida";
 };
+
+
 
 function Inicio(props) {
     const {
@@ -46,14 +49,10 @@ function Inicio(props) {
         currentUser,
         handleLogout,
 		usersData,
+		loading,
     } = props;
 
     const navigate = useNavigate();
-
-    useEffect(() => {
-        const publicacionesGuardadas = JSON.parse(localStorage.getItem('publicaciones')) || [];
-        setPublicaciones(publicacionesGuardadas);
-    }, []);
 
     useEffect(() => {
         document.body.className = theme;
@@ -96,6 +95,7 @@ function Inicio(props) {
         });
         return defaultUsersData;
     };
+	
     return (
         <>
             <div className='Perfil'>
@@ -167,7 +167,9 @@ function Inicio(props) {
             </footer>
 
             <main>
-                {publicaciones && publicaciones.length > 0 ? (
+			{loading ? (
+			  <h4 className='h4-h4'>Cargando publicaciones...</h4>
+			) : publicaciones && publicaciones.length > 0 ? (
                     publicaciones.map((publicacion) => {
                         const likedBy = publicacion.likedBy || [];
                         const userHasLiked = isLoggedIn && likedBy.includes(currentUser);
@@ -222,6 +224,7 @@ function Inicio(props) {
 }
 
 function App() {
+	const [loading, setLoading] = useState(true);
     const [admin, setAdmin] = useState(false);
     const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
     const [publicaciones, setPublicaciones] = useState([]);
@@ -243,6 +246,7 @@ function App() {
     // 🔄 Sincronizar usersData con localStorage
 	// 1. Inicialización de publicaciones (desde Firestore)
 	useEffect(() => {
+		setLoading(true);
 	  const unsubscribe = onSnapshot(collection(db, "publicaciones"), (snapshot) => {
 	    const publicacionesFirestore = snapshot.docs.map(doc => ({
 	      id: doc.id,
@@ -250,6 +254,7 @@ function App() {
 	    }));
 	    setPublicaciones(publicacionesFirestore);
 	    console.log("📥 Publicaciones cargadas desde Firestore:", publicacionesFirestore.length);
+		setLoading(false);
 	  });
 
 	  return () => unsubscribe(); // Limpia el listener al desmontar
@@ -462,6 +467,7 @@ function App() {
                         currentUser={currentUser}
                         handleLogout={handleLogout}
 						usersData={usersData}
+						loading={loading}
                     />
                 }
             />
@@ -530,6 +536,7 @@ function App() {
             <Route
                 path='/new'
                 element={<New theme={theme} isLoggedIn={isLoggedIn} currentUser={currentUser} />}
+				
             />
 
             <Route
