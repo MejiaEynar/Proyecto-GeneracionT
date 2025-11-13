@@ -25,6 +25,15 @@ import { collection, getDocs, onSnapshot } from "firebase/firestore";
 import { db } from "./firebase";
 import { doc, updateDoc, deleteDoc } from "firebase/firestore";
 // ------------------- COMPONENTE INICIO -------------------
+
+const formatDate = (fecha) => {
+  if (!fecha) return "Fecha desconocida";
+  if (fecha.seconds) return new Date(fecha.seconds * 1000).toLocaleDateString("es-ES");
+  if (typeof fecha === "string" || typeof fecha === "number")
+    return new Date(fecha).toLocaleDateString("es-ES");
+  return "Fecha inválida";
+};
+
 function Inicio(props) {
     const {
         admin,
@@ -186,7 +195,7 @@ function Inicio(props) {
                                     {/* Fecha: usa el nombre de clase que ya definiste en CSS */}
                                     {publicacion.fechaCreacion && (
                                         <span className='usuario-post-date'>
-                    {new Date(publicacion.fechaCreacion).toLocaleDateString('es-ES')}
+                  {formatDate(publicacion.fechaCreacion)}
                 </span>
                                     )}
                                 </div>
@@ -552,6 +561,7 @@ function App() {
                         setPublicaciones={setPublicaciones}
                         handleLike={isLoggedIn ? handleLike : () => alert('Debes iniciar sesión para dar "Me gusta".')}
                         handleDeletePost={handleDeletePost} // 👈 agregado
+						usersData={usersData}
                     />
                 }
             />

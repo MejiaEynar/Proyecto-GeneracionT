@@ -8,6 +8,14 @@ import { doc, getDoc, updateDoc, arrayUnion, arrayRemove } from "firebase/firest
 import inicioBlack from "./assets/inicioBlack.png";
 import inicioWhite from "./assets/inicioWhite.png";
 
+const formatDate = (fecha) => {
+  if (!fecha) return "Fecha desconocida";
+  if (fecha.seconds) return new Date(fecha.seconds * 1000).toLocaleDateString("es-ES");
+  if (typeof fecha === "string" || typeof fecha === "number")
+    return new Date(fecha).toLocaleDateString("es-ES");
+  return "Fecha inválida";
+};
+
 function Usuario({
     isLoggedIn,
     currentUser,
@@ -173,7 +181,7 @@ function Usuario({
                                     </h4>
                                     {post.fechaCreacion && (
                                         <span className='usuario-post-date'>
-                                            {new Date(post.fechaCreacion).toLocaleDateString()}
+                                          {formatDate(post.fechaCreacion)}
                                         </span>
                                     )}
                                 </div>

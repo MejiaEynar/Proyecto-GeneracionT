@@ -10,6 +10,15 @@ import inicioBlack from "./assets/inicioBlack.png";
 import { db } from "./firebase";
 import { collection, addDoc, onSnapshot, query, orderBy, doc, updateDoc } from "firebase/firestore";
 
+
+const formatDate = (fecha) => {
+  if (!fecha) return "Fecha desconocida";
+  if (fecha.seconds) return new Date(fecha.seconds * 1000).toLocaleDateString("es-ES");
+  if (typeof fecha === "string" || typeof fecha === "number")
+    return new Date(fecha).toLocaleDateString("es-ES");
+  return "Fecha inválida";
+};
+
 function Comentar(props) {
   const { id } = useParams();
   const { publicaciones, handleLike, theme, isLoggedIn, currentUser,  usersData, } = props;
@@ -135,7 +144,7 @@ function Comentar(props) {
                 <h3>{publicacion.titulo}</h3>
                 {publicacion.fechaCreacion && (
                   <span className='usuario-post-date'>
-                    {new Date(publicacion.fechaCreacion).toLocaleDateString('es-ES')}
+                   {formatDate(publicacion.fechaCreacion)}
                   </span>
                 )}
               </div>
