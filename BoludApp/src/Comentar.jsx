@@ -218,40 +218,62 @@ function Comentar(props) {
             const userHasLiked = comentario.likedBy?.includes(currentUser);
             const likeCount = comentario.likedBy?.length || 0;
 
+            // 🆕 Obtener los datos del usuario del comentario
+            const userData = usersData?.[comentario.nombreUsuario];
+            const userAvatar = userData?.avatar || "https://abs.twimg.com/sticky/default_profile_images/default_profile_400x400.png";
+
             return (
-              <div className='comentarios' key={comentario.id}>
-                <div className='comentario-header'>
-				<h4 className='comentario-usuario'>
-				  {usersData?.[comentario.nombreUsuario]?.name || comentario.nombreUsuario}{" "}
-				  <span style={{ color: "gray", fontSize: "0.9em" }}>
-				    ({usersData?.[comentario.nombreUsuario]?.username || `@${comentario.nombreUsuario}`})
-				  </span>
-				</h4>
-                  {comentario.fechaCreacion && (
-                    <span className='usuario-post-date'>
-                      {new Date(comentario.fechaCreacion.seconds
-                        ? comentario.fechaCreacion.seconds * 1000
-                        : comentario.fechaCreacion).toLocaleDateString('es-ES')}
-                    </span>
-                  )}
-                </div>
+                <div className='comentarios' key={comentario.id}>
+                  {/* 🆕 Nuevo div para alinear avatar, nombre y fecha */}
+                  <div className='comentario-usuario-info'>
+                    <Link to={`/usuario/${comentario.nombreUsuario}`} className='usuario-link'>
+                      <img
+                          src={userAvatar}
+                          alt="Avatar del autor"
+                          className="publicacion-avatar" // 💡 Reutilizamos el estilo de avatar de la publicación
+                      />
+                      <div className='comentario-header-info'>
+                        {/* 🆕 Nuevo div para apilar el Nombre y el Username */}
+                        <div className="comentario-nombre-stack">
+                          <h4 className='comentario-usuario'>
+                            {userData?.name || comentario.nombreUsuario}
+                          </h4>
+                          {/* Mantenemos el span pero lo sacamos del h4 */}
+                          <span className="comentario-username-text" style={{ color: "gray", fontSize: "0.9em" }}>
+                            @{userData?.username || comentario.nombreUsuario}
+                          </span>
+                        </div>
+                        {/* El bloque de la fecha se mantiene separado para alineación */}
+                        {comentario.fechaCreacion && (
+                            <span className='usuario-post-date'>
+                                    {new Date(comentario.fechaCreacion.seconds
+                                        ? comentario.fechaCreacion.seconds * 1000
+                                        : comentario.fechaCreacion).toLocaleDateString('es-ES')}
+                                </span>
+                        )}
+                      </div>
+                    </Link>
+                  </div>
 
-                <div className='comentario-contenido'>
-                  <Markdown remarkPlugins={[remarkGfm]}>
-                    {comentario.comentario}
-                  </Markdown>
-                </div>
+                  {/* NOTA: El div 'comentario-header' original fue absorbido o adaptado,
+                       mantendremos 'comentario-contenido' */}
 
-                <button
-                  className={`boton ${userHasLiked ? 'liked' : ''}`}
-                  onClick={() => handleLikeComentario(comentario.id)}
-                >
-                  {userHasLiked
-                    ? <img src={like1} className="like" alt="like" />
-                    : <img src={like} className="like" alt="like" />}
-                  {likeCount} Me gusta
-                </button>
-              </div>
+                  <div className='comentario-contenido'>
+                    <Markdown remarkPlugins={[remarkGfm]}>
+                      {comentario.comentario}
+                    </Markdown>
+                  </div>
+
+                  <button
+                      className={`boton ${userHasLiked ? 'liked' : ''}`}
+                      onClick={() => handleLikeComentario(comentario.id)}
+                  >
+                    {userHasLiked
+                        ? <img src={like1} className="like" alt="like" />
+                        : <img src={like} className="like" alt="like" />}
+                    {likeCount} Me gusta
+                  </button>
+                </div>
             );
           })}
         </section>

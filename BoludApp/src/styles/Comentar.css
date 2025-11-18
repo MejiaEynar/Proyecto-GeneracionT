@@ -1,5 +1,9 @@
+/* ========================================================= */
+/* 1. ESTRUCTURA BASE Y NAVEGACIÓN (Nav-comentar) */
+/* ========================================================= */
+
 .Nav-comentar {
-    position: fixed; /* Hace que la barra se quede en la parte superior al hacer scroll */
+    position: fixed;
     bottom: 0;
     z-index: 1000;
     width: 100%;
@@ -7,50 +11,44 @@
 
 .Nav-comentar > ul {
     text-align: center;
-    list-style: none;|
+    list-style: none;
     display: flex;
     padding: 15px;
     margin: 0;
     justify-content: space-around;
     align-items: center;
-    border-bottom: 1px solid;
+    border-bottom: 1px solid; /* El color varía según el tema */
     font-size: 20px;
     font-weight: bold;
-
 }
 
+/* ========================================================= */
+/* 2. ESTILOS DE LA SECCIÓN DE COMENTARIOS */
+/* ========================================================= */
+
+/* Contenedor general de un comentario */
 .comentarios {
     margin-bottom: 10px;
     font-size: 16px;
     padding: 15px;
     border-radius: 12px;
-    border: 1px solid;
+    border: 1px solid; /* El color varía según el tema */
+    display: flex;
+    flex-direction: column;
 }
 
-.comentarios > h4 {
-    margin-left: 10px;
-    margin-top: 0;
-    margin-bottom: 2px;
-    font-weight: bold;
-}
 .comentarios p {
     font-weight: normal;
 }
 
-.comentario-header {
-    display: flex;             /* Habilita el layout flexible */
-    justify-content: space-between; /* Empuja los elementos a los extremos */
-    align-items: baseline;     /* Alinea por la base del texto */
-    margin-bottom: 3px;       /* Espacio debajo del título/fecha */
-    margin-top: 1px;           /* Pequeño espacio sobre el título */
-}
-
+/* Título "Comentarios" */
 .Comen-title {
     font-size: 16px;
     margin: 15px 0;
     font-weight: bold;
 }
 
+/* Formularios de Comentarios (Input/Textarea) */
 .form-comentarios {
     display: flex;
     flex-direction: column;
@@ -67,7 +65,7 @@
     margin: 10px 0;
     padding: 12px;
     border-radius: 8px;
-    border: 1px solid;
+    border: 1px solid; /* El color varía según el tema */
     background-color: transparent;
     font-size: 16px;
 }
@@ -84,29 +82,78 @@
     color: #ffffff;
 }
 
-.light .Nav-comentar > nav > ul {
+/* ========================================================= */
+/* 3. ESTILOS DE USUARIO EN COMENTARIO (Avatar + Nombre apilado) */
+/* ========================================================= */
+
+/* Contenedor principal que envuelve al usuario (avatar + info) */
+.comentario-usuario-info {
+    margin-bottom: 5px;
+}
+
+/* El enlace que contiene el avatar y la info apilada */
+.comentario-usuario-info .usuario-link {
+    display: flex;
+    align-items: flex-start; /* Alinea el avatar y la pila de nombre/fecha */
+    text-decoration: none;
+    color: inherit;
+    font-size: 1em;
+}
+
+/* Contenedor para la pila de nombre/username y la fecha */
+.comentario-header-info {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    align-items: flex-start;
+    min-height: 36px; /* Altura mínima igual al avatar */
+}
+
+/* 🟢 Pila de Nombre Principal y Username (hace que el username quede abajo) */
+.comentario-nombre-stack {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+    flex-shrink: 1;
+    min-width: 0;
+}
+
+/* Estilo para el nombre principal */
+.comentario-nombre-stack h4 {
+    margin: 0; /* Elimina márgenes de h4 */
+    font-size: 1em;
+    font-weight: bold;
+}
+
+/* Estilo para el @username (usando la clase para consistencia) */
+.comentario-username-text {
+    font-weight: normal;
+    margin-top: -2px; /* Ajuste para acercarlo al nombre */
+}
+
+/* La clase .publicacion-avatar (del archivo App.css) se reutiliza aquí */
+/* .publicacion-avatar { ... } */
+
+
+/* 🚨 Estilo obsoleto: Esto ya no es necesario con el nuevo layout. */
+.comentario-header {
+    display: none;
+}
+
+/* ========================================================= */
+/* 4. TEMAS (Modo Claro y Modo Oscuro) */
+/* ========================================================= */
+
+/* --- TEMA CLARO (.light) --- */
+
+.light .Nav-comentar > ul {
     background-color: #ffffff;
     border-bottom: 1px solid #e7e9ea;
 }
 .light .Nav-comentar .inicio {
     color: #0f1419;
 }
-
-.dark .nav-New > nav > ul {
-    background-color: #16202b;
-    border-color: #333639;
-}
-.dark .inicio {
-    color: #e7e9ea;
-}
-
-/* Estilos para el modo claro (basado en Twitter) */
-.dark .Nav-comentar > ul {
-    background-color: #16202b;
-    border-bottom: 1px solid #333639;
-}
-
-
 .light .comentarios {
     background-color: #ffffff;
     border-color: #e7e9ea;
@@ -122,10 +169,14 @@
     border-color: #cfd9de;
 }
 
-/* Estilos para el modo oscuro (basado en Twitter "Dim") */
+/* --- TEMA OSCURO (.dark) --- */
+
 .dark .Nav-comentar > ul {
     background-color: #16202b;
-    border-color: #333639;
+    border-bottom: 1px solid #333639;
+}
+.dark .inicio {
+    color: #e7e9ea;
 }
 .dark .comentarios {
     background-color: #1d2733;

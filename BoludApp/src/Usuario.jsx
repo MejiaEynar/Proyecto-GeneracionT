@@ -9,19 +9,19 @@ import inicioBlack from "./assets/inicioBlack.png";
 import inicioWhite from "./assets/inicioWhite.png";
 
 const formatDate = (fecha) => {
-  if (!fecha) return "Fecha desconocida";
-  if (fecha.seconds) return new Date(fecha.seconds * 1000).toLocaleDateString("es-ES");
-  if (typeof fecha === "string" || typeof fecha === "number")
-    return new Date(fecha).toLocaleDateString("es-ES");
-  return "Fecha inválida";
+    if (!fecha) return "Fecha desconocida";
+    if (fecha.seconds) return new Date(fecha.seconds * 1000).toLocaleDateString("es-ES");
+    if (typeof fecha === "string" || typeof fecha === "number")
+        return new Date(fecha).toLocaleDateString("es-ES");
+    return "Fecha inválida";
 };
 
 function Usuario({
-    isLoggedIn,
-    currentUser,
-    theme,
-    publicaciones = [],
-}) {
+                     isLoggedIn,
+                     currentUser,
+                     theme,
+                     publicaciones = [],
+                 }) {
     const navigate = useNavigate();
     const { username: urlUsername } = useParams();
     const userToShow = urlUsername || currentUser;
@@ -173,6 +173,28 @@ function Usuario({
                     {publicacionesUsuario.length > 0 ? (
                         publicacionesUsuario.map((post) => (
                             <div key={post.id} className="usuario-post">
+                                {/* ✅ 1. INFO DEL AUTOR (Avatar y Nombre Apilado) */}
+                                <div className='publicacion-usuario-info'>
+                                    <Link to={`/usuario/${userToShow}`} className='usuario-link'>
+                                        <img
+                                            src={userData.avatar}
+                                            alt="Avatar del autor"
+                                            className='publicacion-avatar'
+                                        />
+                                        <div>
+                                            {/* Nombre */}
+                                            <strong>{userData.name}</strong>
+                                            {/* Username apilado abajo */}
+                                            <span className="usuario-username-text" style={{ color: "gray", fontSize: "0.9em" }}>
+                                                @{userToShow}
+                                            </span>
+                                        </div>
+                                    </Link>
+                                </div>
+                                {/* FIN DE INFO DEL AUTOR */}
+
+                                {/* 2. HEADER DEL POST (Título y Fecha) */}
+                                {/* Aquí ya no se necesita el h4 dentro, ya que el título puede ir solo después */}
                                 <div className='usuario-post-header'>
                                     <h4>
                                         <Link to={`/post/${post.id}`}>{post.titulo}</Link>
